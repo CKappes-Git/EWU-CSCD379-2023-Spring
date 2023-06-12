@@ -27,27 +27,41 @@ namespace Wordle.Api.Controllers
             _jwtConfiguration = jwtConfiguration;
         }
 
+        [HttpGet("GetCivs")]
+        public async Task<IEnumerable<Civ>> GetCivs(int? count, string start = "")
+        {
+            return await _civService.GetCivsAsync(count, start);
+        }
+
         [HttpGet("GetLeaders")]
-        public async Task<IEnumerable<Leader>> GetManyWords(int? count, string start = "")
+        public async Task<IEnumerable<Leader>> GetLeaders(int? count, string start = "")
         {
             return await _civService.GetLeadersAsync(count, start);
         }
 
-        [HttpPost("AddLeader")]
-        [Authorize(Policy = Policies.MasterOfTheUniverse)]
-        public async Task<LeaderInfoDto> AddWord(string newWord, bool isCommon)
+        [HttpPost("AddCiv")]
+        public async Task<Civ> AddCiv(string civName)
         {
-            return await _civService.AddWordAsync(newWord, isCommon);
+            return await _civService.AddCivAsync(civName);
         }
+
+        
+        [HttpPost("AddLeader")]
+        //[Authorize(Policy = Policies.MasterOfTheUniverse)]
+        public async Task<Leader> AddLeader(string civName, string leaderName)
+        {
+            return await _civService.AddLeaderAsync(civName, leaderName);
+        }
+        /*
         [HttpPost("EditAttribute")]
         [Authorize(Policy = Policies.MasterOfTheUniverse)]
         public async Task<Word> DeleteWord([FromBody] WordDto word)
         {
             return await _civService.DeleteWordAsync(word.Text);
         }
-
+        */
         [HttpGet("paginatedLeaders")]
-        public async Task<IEnumerable<Word>> GetPaginatedWords(int page = 1, int count = 10, string start = "")
+        public async Task<IEnumerable<Leader>> GetPaginatedWords(int page = 1, int count = 10, string start = "")
         {
             return (await _civService.GetPaginatedLeadersAsync(page, count, start));
         }

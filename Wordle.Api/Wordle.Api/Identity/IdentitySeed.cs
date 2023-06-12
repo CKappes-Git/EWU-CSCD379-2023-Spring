@@ -8,7 +8,7 @@ public static class IdentitySeed
     public static async Task SeedAsync(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         await SeedRolesAsync(roleManager);
-        
+
         await SeedAdminAsync(userManager);
     }
 
@@ -22,13 +22,15 @@ public static class IdentitySeed
 
     private static async Task SeedAdminAsync(UserManager<AppUser> userManager)
     {
-        if (await userManager.FindByEmailAsync("Admin@admin.com") == null)
+        if (await userManager.FindByEmailAsync("Admin@intellitect.com") == null)
         {
             AppUser user = new AppUser
             {
-                UserName = "Admin@admin.com",
-                Email = "Admin@admin.com",
-                Name = "Admin"
+                UserName = "Admin@intellitect.com",
+                Email = "Admin@intellitect.com",
+                Name = "Admin",
+                MasterOfTheUniverse = true,
+                Birthday = DateTime.MinValue.AddYears(1)
             };
 
             IdentityResult result = userManager.CreateAsync(user, "S3cur3P@ssw0rd!").Result;
@@ -44,7 +46,9 @@ public static class IdentitySeed
             {
                 UserName = "NormalUser@normal.com",
                 Email = "NormalUser@normal.com",
-                Name = "NormalUser"
+                Name = "NormalUser",
+                MasterOfTheUniverse = false,
+                Birthday = DateTime.Now.AddYears(-40)
             };
 
             IdentityResult result = userManager.CreateAsync(user, "Qwerty#3").Result;

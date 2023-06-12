@@ -18,6 +18,8 @@ namespace Wordle.Api.Data
         public DbSet<PlayerGame> PlayerGames => Set<PlayerGame>();
         public DbSet<Leader> Leaders => Set<Leader>();
         public DbSet<Civ> Civs => Set<Civ>();
+        public DbSet<LeaderAttribute> LeaderAttributes => Set<LeaderAttribute>();
+        public DbSet<CivAttribute> CivAttributes => Set<CivAttribute>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

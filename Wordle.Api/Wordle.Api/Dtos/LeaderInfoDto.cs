@@ -7,5 +7,6 @@ namespace Wordle.Api.Dtos
         public required string LeaderName { get; set; }
         public required string CivName { get; set; }
         public List<CivAttribute>? CivAttributes { get; set; }
+        public List<LeaderAttribute>? LeaderAttributes { get; set; }
     }
 }

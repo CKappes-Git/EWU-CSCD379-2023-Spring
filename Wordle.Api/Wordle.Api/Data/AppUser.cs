@@ -4,8 +4,10 @@ namespace Wordle.Api.Data;
 
 public class AppUser : IdentityUser
 {
-    public Guid UserId { get; set; }
     public required string Name { get; set; }
-    public int NumPosts { get; set; }
-    
+    public int GameCount { get; set; }
+    public double AverageAttempts { get; set; }
+    public int AverageSecondsPerGame { get; set; }
+    public Boolean MasterOfTheUniverse { get; set; } = false;
+    public required DateTime Birthday { get; set; }
 }
