@@ -52,6 +52,18 @@ namespace Wordle.Api.Controllers
         {
             return await _civService.AddLeaderAsync(civName, leaderName);
         }
+
+        [HttpPost("AddAttributes")]
+        public async Task<LeaderInfoDto> AddAttributes(string civName, string leaderName, AttributePairDto attributes)
+        {
+            return await _civService.AddAttributesAsync(civName, leaderName, attributes);
+        }
+
+        [HttpGet("AllLeaderData")]
+        public async Task<LeaderInfoDto> GetAllLeaderData(string leaderName)
+        {
+            return await _civService.GetLeaderInfoAsync(leaderName);
+        }
         /*
         [HttpPost("EditAttribute")]
         [Authorize(Policy = Policies.MasterOfTheUniverse)]
@@ -64,6 +76,16 @@ namespace Wordle.Api.Controllers
         public async Task<IEnumerable<Leader>> GetPaginatedWords(int page = 1, int count = 10, string start = "")
         {
             return (await _civService.GetPaginatedLeadersAsync(page, count, start));
+        }
+        [HttpPost("setBackgroundUrl")]
+        public async Task<String> setBackground(string civName, string url)
+        {
+            return await _civService.SetBackgroundUrl(civName, url);
+        }
+        [HttpGet("GetBackgroundUrl")]
+        public async Task<String> getBackground(string civName)
+        {
+            return await _civService.GetBackgroundUrl(civName);
         }
     }
 }

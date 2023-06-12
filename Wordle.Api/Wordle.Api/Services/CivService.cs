@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Wordle.Api.Data;
 using Wordle.Api.Dtos;
@@ -78,12 +79,13 @@ public class CivService
         return leader;
     }
 
-    public async Task<LeaderInfoDto> AddAttributesAsync(string civName, string leaderName, List<AttributeDto>? leaderAttributes = null, List<AttributeDto>? civAttributes = null)
+    public async Task<LeaderInfoDto> AddAttributesAsync(string civName, string leaderName, AttributePairDto attributes)
     {
-        if (leaderName is null || civName is null || (leaderAttributes is null && civAttributes is null))
+        if (leaderName is null || civName is null || attributes is null)
         {
             throw new ArgumentException("The leader is missing something");
         }
+        
         var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName);
         if (civ == null)
         {
@@ -95,32 +97,45 @@ public class CivService
             LeaderInfoDto temp = new() { CivName = civName, LeaderName = leaderName };
             leader = await AddLeaderAsync(civName, leaderName);
         }
-        if(leaderAttributes is not null) {
+
+        if(attributes.LeaderAttributes is not null) {
+            var leaderAttributes = attributes.LeaderAttributes;
+            var leaderList = await _db.LeaderAttributes.Where(a => a.LeaderID == leader.LeaderID).ToListAsync();
             for (var i = 0; i < leaderAttributes.Count; i++)
             {
-                LeaderAttribute lAttribute = new()
-                {
-                    LeaderID = leader.LeaderID,
-                    AttributeType = leaderAttributes[i].AttributeType,
-                    AbilityName = leaderAttributes[i].AbilityName,
-                    Description = leaderAttributes[i].Description
+                var temp = leaderList.Where(a => a.AbilityName == leaderAttributes[i].AbilityName).FirstOrDefault();
+                if (temp == null) {//if there is not already an ability by that name for that leader
+                    LeaderAttribute lAttribute = new()
+                    {
+                        LeaderID = leader.LeaderID,
+                        AttributeType = leaderAttributes[i].AttributeType,
+                        AbilityName = leaderAttributes[i].AbilityName,
+                        Description = leaderAttributes[i].Description
 
-                };
-                _db.LeaderAttributes.Add(lAttribute);
+                    };
+                    _db.LeaderAttributes.Add(lAttribute);
+                }
+                
             }
         }
-        if (civAttributes is not null) {
+        if (attributes.CivAttributes is not null) {
+            var civAttributes = attributes.CivAttributes;
+            var civList = await _db.CivAttributes.Where(a => a.CivID == civ.CivID).ToListAsync();
             for (var i = 0; i < civAttributes.Count; i++)
             {
-                CivAttribute cAttribute = new()
-                {
-                    CivID = civ.CivID,
-                    AttributeType = civAttributes[i].AttributeType,
-                    AbilityName = civAttributes[i].AbilityName,
-                    Description = civAttributes[i].Description
+                var temp = civList.Where(a => a.AbilityName == civAttributes[i].AbilityName).FirstOrDefault();
+                if (temp == null)
+                {//if there is not already an ability by that name for that leader
+                    CivAttribute cAttribute = new()
+                    {
+                        CivID = civ.CivID,
+                        AttributeType = civAttributes[i].AttributeType,
+                        AbilityName = civAttributes[i].AbilityName,
+                        Description = civAttributes[i].Description
 
-                };
-                _db.CivAttributes.Add(cAttribute);
+                    };
+                    _db.CivAttributes.Add(cAttribute);
+                }
             }
         }
 
@@ -156,6 +171,47 @@ public class CivService
         };
 
         return leaderInfo;
+    }
+
+    public async Task<String> GetBackgroundUrl(string civName)
+    {
+        if(civName is null) { throw new ArgumentNullException("CivName is null"); }
+        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName);
+        if (civ == null) { throw new ArgumentNullException("Civ does not exist"); }
+        var background = await _db.CivBackgrounds.FirstOrDefaultAsync(b => b.CivID == civ.CivID);
+        if (background == null) { return "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_1280.png"; }
+        else
+        {
+            return background.Url;
+        }
+    }
+
+    public async Task<String> SetBackgroundUrl(string civName, string backgroundUrl)
+    {
+        if(civName is null || backgroundUrl is null)
+        {
+            throw new ArgumentNullException("Param is empty");
+        }
+        var civ = _db.Civs.FirstOrDefault(c => c.CivName == civName); 
+        if (civ == null) {
+            throw new ArgumentNullException("Civ does not exist, cannot give it a background");
+        }
+        var background = _db.CivBackgrounds.FirstOrDefault(b => b.CivID==civ.CivID);
+        if (background == null)
+        {
+            background = new()
+            {
+                CivID = civ.CivID,
+                Url = backgroundUrl
+            };
+            _db.CivBackgrounds.Add(background);
+        }
+        else
+        {
+            background.Url = backgroundUrl;
+        }
+        await _db.SaveChangesAsync();
+        return background.Url;
     }
 
     /*

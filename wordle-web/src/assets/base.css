@@ -56,12 +56,13 @@ span.bg {
 }
 
 div.v-theme--dark span.bg {
-  background: url('https://cdn.pixabay.com/photo/2016/03/26/13/09/organic-1280537_1280.jpg')
+  background: url('https://cdn.2kgames.com/civilization.com/1920x1080.jpg')
     no-repeat center center;
   position: fixed;
+  background-size: cover;
 }
 div.v-theme--light span.bg {
-  background: url('https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg?w=1800&t=st=1685051587~exp=1685052187~hmac=9cf1a6e2ff2972d0368e9d627e31be987250d82dee79485dd42dd15e66ff7d84')
-    no-repeat center center;
-  position: fixed;
+  background: url('https://cdn1.epicgames.com/cd14dcaa4f3443f19f7169a980559c62/offer/EGS_SidMeiersCivilizationVI_FiraxisGames_S1-2560x1440-2fcd1c150ac6d8cdc672ae042d2dd179.jpg')
+    no-repeat fixed center;
+  background-size: cover;
 }
