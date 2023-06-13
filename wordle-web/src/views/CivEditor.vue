@@ -2,7 +2,7 @@
     <v-container :class="[theme.global.name.value === 'dark' ? 'containerD' : 'containerL']">
         <div>
             <v-row>
-                <v-text-field style="width: 75%;" label="Civ" type="text" v-model="civName" @input="searchCiv"></v-text-field>
+                <v-text-field style="width: 75%;" label="Civ" type="text" v-model="civName" @click="searchCiv" @input="searchCiv"></v-text-field>
                 <v-btn style="margin-top: 8px; background-color: green;" @click="addCiv">
                     +
                 </v-btn>
@@ -15,7 +15,7 @@
         </div>
         <div v-if="curCiv != null">
             <v-row>
-                <v-text-field style="width: 75%;" label="Leader" type="text" v-model="leaderName" @input="search"></v-text-field>
+                <v-text-field style="width: 75%;" label="Leader" type="text" v-model="leaderName" @click="search" @input="search"></v-text-field>
                 <v-btn style="margin-top: 8px; background-color: green;" @click="addLeader">
                     +
                 </v-btn>
@@ -54,9 +54,15 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <v-btn @click="submit">
+        <v-btn  v-if="curLeader != null" @click="submit" style="margin: 8px; width: 75%;">
             Submit Changes
         </v-btn>
+        <div  v-if="backgroundUrl != null">
+            <v-row>
+                <v-text-field style="width: 75%;" label="Background" type="text" v-model="backgroundUrl"></v-text-field>
+                <v-btn @click="setBackground">Set</v-btn>
+            </v-row>
+        </div>
     </v-container>
 </template>
 
@@ -81,6 +87,7 @@ const civResults = ref<Civ[]>([])
 const leaderName = ref('')
 const searchResults = ref<Leader[]>([])
 const curLeader = ref<LeaderInfoDto>()
+const backgroundUrl = ref('')
 
 async function searchCiv(){
     let apiPath = `civilization/GetCivs?start=${civName.value}`
@@ -109,6 +116,24 @@ async function search() {
   })
 }
 
+async function setBackground(){
+    let apiPath = `civilization/SetBackgroundUrl?civName=${curLeader.value?.civName}&url=${backgroundUrl.value}`
+    Axios.post(apiPath).then((result) => {
+        console.log(result.data)
+        backgroundUrl.value = result.data
+    }).catch((error) => {
+        console.log(error)
+    })
+}
+
+async function getUrl(){
+    let apiPath = `civilization/GetBackgroundUrl?civName=${curLeader.value?.civName}`
+    Axios.get(apiPath).then((result) => {
+        console.log(result.data)
+        backgroundUrl.value = result.data
+    })
+}
+
 async function setLeader(name = ''){
     leaderName.value = name
     searchResults.value = []
@@ -117,6 +142,7 @@ async function setLeader(name = ''){
     Axios.get(apiPath).then((result) => {
         console.log(result.data)
         curLeader.value = result.data
+        getUrl()
     })
 }
 
@@ -167,4 +193,8 @@ async function submit(){
         margin-top: 5px;
         background-color:rgba(255, 255, 255, 0.8);
     }
+    .searchBox{
+    overflow-y: scroll;
+    max-height: 150px;
+}
 </style>

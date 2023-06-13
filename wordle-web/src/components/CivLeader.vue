@@ -1,6 +1,6 @@
 <template>
     <v-container class="leaderContainer" :style="{'background-image': `url(${backgroundImageUrl})`}" style="height: 100%; margin-top: 8px;">
-        <v-text-field :class="[theme.global.name.value === 'dark' ? 'textInputD' : 'textInputL']" label="Leader" type="text" v-model="leaderName" @input="search"></v-text-field>
+        <v-text-field :class="[theme.global.name.value === 'dark' ? 'textInputD' : 'textInputL']" label="Leader" type="text" v-model="leaderName" @click="search" @input="search"></v-text-field>
         <div class="searchBox">
             <div v-for="(leader, index) in searchResults" :key="index">
                 <v-btn style="margin-bottom: 1px; margin-bottom: 1px; width: 100%;" @click="setLeader(leader.name)">{{ leader.name }}</v-btn>

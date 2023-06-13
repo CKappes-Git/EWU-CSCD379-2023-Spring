@@ -117,7 +117,7 @@ public class CivService
             var leaderList = await _db.LeaderAttributes.Where(a => a.LeaderID == leader.LeaderID).ToListAsync();
             for (var i = 0; i < leaderAttributes.Count; i++)
             {
-                if (leaderAttributes[i].LeaderAttributeID == -1) {
+                if (leaderAttributes[i].LeaderAttributeID == 0) {
                     LeaderAttribute lAttribute = new()
                     {
                         LeaderID = leader.LeaderID,
@@ -158,7 +158,7 @@ public class CivService
             var civList = await _db.CivAttributes.Where(a => a.CivID == civ.CivID).ToListAsync();
             for (var i = 0; i < civAttributes.Count; i++)
             {
-                if (civAttributes[i].CivAttributeID == -1)
+                if (civAttributes[i].CivAttributeID == 0)
                 {
                     CivAttribute cAttribute = new()
                     {
