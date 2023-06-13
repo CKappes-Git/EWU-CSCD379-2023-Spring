@@ -1,8 +1,9 @@
-import type { Attribute } from "./attribute";
+import type { CivAttribute } from "./civAttribute";
+import type { LeaderAttribute } from "./leaderAttribute";
 
 export class LeaderInfoDto {
     leaderName: string = ''
     civName: string = ''
-    civAttributes: Attribute[] = []
-    leaderAttributes: Attribute[] = []
+    civAttributes: CivAttribute[] = []
+    leaderAttributes: LeaderAttribute[] = []
   }

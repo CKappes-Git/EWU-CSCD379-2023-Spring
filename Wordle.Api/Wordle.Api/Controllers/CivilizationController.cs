@@ -34,9 +34,9 @@ namespace Wordle.Api.Controllers
         }
 
         [HttpGet("GetLeaders")]
-        public async Task<IEnumerable<Leader>> GetLeaders(int? count, string start = "")
+        public async Task<IEnumerable<Leader>> GetLeaders(int? count, string? civName, string start = "")
         {
-            return await _civService.GetLeadersAsync(count, start);
+            return await _civService.GetLeadersAsync(count, civName, start);
         }
 
         [HttpPost("AddCiv")]
@@ -54,9 +54,9 @@ namespace Wordle.Api.Controllers
         }
 
         [HttpPost("AddAttributes")]
-        public async Task<LeaderInfoDto> AddAttributes(string civName, string leaderName, AttributePairDto attributes)
+        public async Task<LeaderInfoDto> AddAttributes(LeaderInfoDto leaderInfo)
         {
-            return await _civService.AddAttributesAsync(civName, leaderName, attributes);
+            return await _civService.AddAttributesAsync(leaderInfo);
         }
 
         [HttpGet("AllLeaderData")]

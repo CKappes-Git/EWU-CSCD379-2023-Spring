@@ -25,15 +25,30 @@ public class CivService
           .ToListAsync();
         return civs;
     }
-    public async Task<IEnumerable<Leader>> GetLeadersAsync(int? count, string start = "")
+    public async Task<IEnumerable<Leader>> GetLeadersAsync(int? count, string? civName, string start = "")
     {
         count ??= 10;
+        if(civName != null)
+        {
+            var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName.StartsWith(civName));
+            if(civ != null)
+            {
+                var leader = await _db.Leaders
+                  .Where(l => l.Name.StartsWith(start) && l.CivID == civ.CivID)
+                  .Take(count.Value)
+                  .OrderByDescending(l => l.Name)
+                  .ToListAsync();
+                return leader;
+            }
+        }
+        
         var leaders = await _db.Leaders
-          .Where(l => l.Name.StartsWith(start))
-          .Take(count.Value)
-          .OrderByDescending(l => l.Name)
-          .ToListAsync();
+            .Where(l => l.Name.StartsWith(start))
+            .Take(count.Value)
+            .OrderByDescending(l => l.Name)
+            .ToListAsync();
         return leaders;
+        
     }
 
     public async Task<Civ> AddCivAsync(string newCivName)
@@ -79,32 +94,30 @@ public class CivService
         return leader;
     }
 
-    public async Task<LeaderInfoDto> AddAttributesAsync(string civName, string leaderName, AttributePairDto attributes)
+    public async Task<LeaderInfoDto> AddAttributesAsync(LeaderInfoDto leaderInfo)
     {
-        if (leaderName is null || civName is null || attributes is null)
+        if (leaderInfo is null)
         {
-            throw new ArgumentException("The leader is missing something");
+            throw new ArgumentException("The leader is missing");
         }
         
-        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName);
+        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == leaderInfo.CivName);
         if (civ == null)
         {
-            civ = await AddCivAsync(civName);
+            civ = await AddCivAsync(leaderInfo.CivName);
         }
-        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderName);
+        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderInfo.LeaderName);
         if (leader == null)
         {
-            LeaderInfoDto temp = new() { CivName = civName, LeaderName = leaderName };
-            leader = await AddLeaderAsync(civName, leaderName);
+            leader = await AddLeaderAsync(leaderInfo.CivName, leaderInfo.LeaderName);
         }
 
-        if(attributes.LeaderAttributes is not null) {
-            var leaderAttributes = attributes.LeaderAttributes;
+        if(leaderInfo.LeaderAttributes is not null) {
+            var leaderAttributes = leaderInfo.LeaderAttributes;
             var leaderList = await _db.LeaderAttributes.Where(a => a.LeaderID == leader.LeaderID).ToListAsync();
             for (var i = 0; i < leaderAttributes.Count; i++)
             {
-                var temp = leaderList.Where(a => a.AbilityName == leaderAttributes[i].AbilityName).FirstOrDefault();
-                if (temp == null) {//if there is not already an ability by that name for that leader
+                if (leaderAttributes[i].LeaderAttributeID == -1) {
                     LeaderAttribute lAttribute = new()
                     {
                         LeaderID = leader.LeaderID,
@@ -115,17 +128,38 @@ public class CivService
                     };
                     _db.LeaderAttributes.Add(lAttribute);
                 }
+                else
+                {
+                    var temp = leaderList.Where(a => a.LeaderAttributeID == leaderAttributes[i].LeaderAttributeID).FirstOrDefault();
+                    if (temp == null)
+                    {//if there is not already an ability by that name for that leader
+                        LeaderAttribute lAttribute = new()
+                        {
+                            LeaderID = leader.LeaderID,
+                            AttributeType = leaderAttributes[i].AttributeType,
+                            AbilityName = leaderAttributes[i].AbilityName,
+                            Description = leaderAttributes[i].Description
+
+                        };
+                        _db.LeaderAttributes.Add(lAttribute);
+                    }
+                    else
+                    {
+                        temp.AttributeType = leaderAttributes[i].AttributeType;
+                        temp.AbilityName = leaderAttributes[i].AbilityName;
+                        temp.Description = leaderAttributes[i].Description;
+                    }
+                }
                 
             }
         }
-        if (attributes.CivAttributes is not null) {
-            var civAttributes = attributes.CivAttributes;
+        if (leaderInfo.CivAttributes is not null) {
+            var civAttributes = leaderInfo.CivAttributes;
             var civList = await _db.CivAttributes.Where(a => a.CivID == civ.CivID).ToListAsync();
             for (var i = 0; i < civAttributes.Count; i++)
             {
-                var temp = civList.Where(a => a.AbilityName == civAttributes[i].AbilityName).FirstOrDefault();
-                if (temp == null)
-                {//if there is not already an ability by that name for that leader
+                if (civAttributes[i].CivAttributeID == -1)
+                {
                     CivAttribute cAttribute = new()
                     {
                         CivID = civ.CivID,
@@ -136,6 +170,29 @@ public class CivService
                     };
                     _db.CivAttributes.Add(cAttribute);
                 }
+                else
+                {
+                    var temp = civList.Where(a => a.CivAttributeID == civAttributes[i].CivAttributeID).FirstOrDefault();
+                    if (temp == null)
+                    {//if there is not already an ability by that name for that leader
+                        CivAttribute cAttribute = new()
+                        {
+                            CivID = civ.CivID,
+                            AttributeType = civAttributes[i].AttributeType,
+                            AbilityName = civAttributes[i].AbilityName,
+                            Description = civAttributes[i].Description
+
+                        };
+                        _db.CivAttributes.Add(cAttribute);
+                    }
+                    else
+                    {
+                        temp.AttributeType = civAttributes[i].AttributeType;
+                        temp.AbilityName = civAttributes[i].AbilityName;
+                        temp.Description = civAttributes[i].Description;
+                    }
+                }
+                
             }
         }
 
