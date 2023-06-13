@@ -289,6 +289,38 @@ public class CivService
     }
     */
 
+    public async Task<CivAttribute> DeleteCivAttributeAsync(int civAttributeID)
+    {
+        if(civAttributeID <= 0)
+        {
+            throw new ArgumentException("invalid id for deletion");
+        }
+        var targetAttribute = await _db.CivAttributes.FirstOrDefaultAsync(a => a.CivAttributeID == civAttributeID);
+        if (targetAttribute != null)
+        {
+            _db.CivAttributes.Remove(targetAttribute);
+        }
+        await _db.SaveChangesAsync();
+        return targetAttribute;
+
+    }
+
+    public async Task<LeaderAttribute> DeleteLeaderAttributeAsync(int leaderAttributeID)
+    {
+        if (leaderAttributeID <= 0)
+        {
+            throw new ArgumentException("invalid id for deletion");
+        }
+        var targetAttribute = await _db.LeaderAttributes.FirstOrDefaultAsync(a => a.LeaderAttributeID == leaderAttributeID);
+        if (targetAttribute != null)
+        {
+            _db.LeaderAttributes.Remove(targetAttribute);
+        }
+        await _db.SaveChangesAsync();
+        return targetAttribute;
+
+    }
+
     public async Task<IEnumerable<Leader>> GetPaginatedLeadersAsync(int page = 1, int count = 10, string start = "")
     {
         if (page < 1) page = 1;

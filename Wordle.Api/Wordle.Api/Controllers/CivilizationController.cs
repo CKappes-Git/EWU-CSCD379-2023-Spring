@@ -64,14 +64,19 @@ namespace Wordle.Api.Controllers
         {
             return await _civService.GetLeaderInfoAsync(leaderName);
         }
-        /*
-        [HttpPost("EditAttribute")]
-        [Authorize(Policy = Policies.MasterOfTheUniverse)]
-        public async Task<Word> DeleteWord([FromBody] WordDto word)
+
+        [HttpPost("DeleteCivAttribute")]
+        public async Task<CivAttribute> DeleteCivAttribute(int civAttributeID)
         {
-            return await _civService.DeleteWordAsync(word.Text);
+            return await _civService.DeleteCivAttributeAsync(civAttributeID);
         }
-        */
+
+        [HttpPost("DeleteLeaderAttribute")]
+        public async Task<LeaderAttribute> DeleteLeaderAttribute(int leaderAttributeID)
+        {
+            return await _civService.DeleteLeaderAttributeAsync(leaderAttributeID);
+        }
+
         [HttpGet("paginatedLeaders")]
         public async Task<IEnumerable<Leader>> GetPaginatedWords(int page = 1, int count = 10, string start = "")
         {

@@ -31,6 +31,7 @@
                 <v-card-title>{{ curLeader.civName }}:</v-card-title>
                 <div style="width: 100%;" v-for="(attribute, index) in curLeader.civAttributes">
                     <v-card style="margin-bottom: 15px;">
+                        <v-btn style="color: red; margin-left: 90%; width: max-content;" @click="removeCivAttribute(attribute, index)">X</v-btn>
                         <v-text-field label="Type" type="text" v-model="attribute.attributeType"></v-text-field>
                         <v-text-field label="Name" type="text" v-model="attribute.abilityName"></v-text-field>
                         <v-text-field label="Description" type="text" v-model="attribute.description"></v-text-field>
@@ -44,6 +45,7 @@
                 <v-card-title>{{ curLeader.leaderName }}:</v-card-title>
                 <div style="width: 100%;" v-for="(attribute, index) in curLeader.leaderAttributes">
                     <v-card style="margin-bottom: 15px;">
+                        <v-btn style="color: red; margin-left: 90%; width: max-content;" @click="removeLeaderAttribute(attribute, index)">X</v-btn>
                         <v-text-field label="Type" type="text" v-model="attribute.attributeType"></v-text-field>
                         <v-text-field label="Name" type="text" v-model="attribute.abilityName"></v-text-field>
                         <v-text-field label="Description" type="text" v-model="attribute.description"></v-text-field>
@@ -54,13 +56,13 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <v-btn  v-if="curLeader != null" @click="submit" style="margin: 8px; width: 75%;">
+        <v-btn  v-if="curLeader != null" @click="submit" style="margin: 8px; width: 100%;">
             Submit Changes
         </v-btn>
-        <div  v-if="backgroundUrl != null">
+        <div style="margin: 20px;" v-if="backgroundUrl != ''">
             <v-row>
                 <v-text-field style="width: 75%;" label="Background" type="text" v-model="backgroundUrl"></v-text-field>
-                <v-btn @click="setBackground">Set</v-btn>
+                <v-btn style="margin-left: 3%; margin-top: 8px;" @click="setBackground">Set</v-btn>
             </v-row>
         </div>
     </v-container>
@@ -88,6 +90,34 @@ const leaderName = ref('')
 const searchResults = ref<Leader[]>([])
 const curLeader = ref<LeaderInfoDto>()
 const backgroundUrl = ref('')
+
+async function removeCivAttribute(attribute: CivAttribute, index: number){
+    if(attribute.civAttributeID != 0){
+        let apiPath = `civilization/DeleteCivAttribute?civAttributeID=${attribute.civAttributeID}`
+        Axios.post(apiPath).then((result) => {
+            console.log(result.data)
+        }).catch((error) =>{
+            console.log(error)
+        })
+    }
+    if(curLeader.value != undefined){
+        curLeader.value.civAttributes.splice(index, 1)
+        
+    }
+}
+
+async function removeLeaderAttribute(attribute: LeaderAttribute, index: number){
+    if(attribute.leaderAttributeID != 0){
+        let apiPath = `civilization/DeleteLeaderAttribute?leaderAttributeID=${attribute.leaderAttributeID}`
+        Axios.post(apiPath).then((result) => {
+            console.log(result.data)
+        })
+    }
+    if(curLeader.value != undefined){
+        curLeader.value.leaderAttributes.splice(index, 1)
+        
+    }
+}
 
 async function searchCiv(){
     let apiPath = `civilization/GetCivs?start=${civName.value}`
