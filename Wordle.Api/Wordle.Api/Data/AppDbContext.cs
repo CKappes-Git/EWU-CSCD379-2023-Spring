@@ -12,17 +12,13 @@ namespace Wordle.Api.Data
 
         }
 
-        public DbSet<Word> Words => Set<Word>();
-        public DbSet<Player> Players => Set<Player>();
-        public DbSet<DateWord> DateWords => Set<DateWord>();
-        public DbSet<PlayerGame> PlayerGames => Set<PlayerGame>();
         public DbSet<Leader> Leaders => Set<Leader>();
         public DbSet<Civ> Civs => Set<Civ>();
         public DbSet<LeaderAttribute> LeaderAttributes => Set<LeaderAttribute>();
         public DbSet<CivAttribute> CivAttributes => Set<CivAttribute>();
         public DbSet<CivBackground> CivBackgrounds => Set<CivBackground>();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -31,6 +27,6 @@ namespace Wordle.Api.Data
                 .HasIndex(f => f.Date)
                 .IsUnique();
            
-        }
+        }*/
     }
 }

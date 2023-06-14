@@ -67,8 +67,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
-builder.Services.AddScoped<WordService>();
-builder.Services.AddScoped<PlayerService>();
 builder.Services.AddScoped<CivService>();
 
 //new for auth
@@ -113,8 +111,6 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
-    Seeder.SeedWords(db);
-    Seeder.SeedPlayers(db);
     await IdentitySeed.SeedAsync(
         scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>(),
         scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>()

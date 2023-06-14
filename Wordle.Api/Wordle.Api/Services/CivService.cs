@@ -328,7 +328,7 @@ public class CivService
         page--;
         var index = page * count;
 
-        var totalCount = await _db.Words.CountAsync(word => word.IsCommon);
+        var totalCount = await _db.Leaders.CountAsync();
         totalCount -= count;
         var leaders = await _db.Leaders
           .Where(l => l.Name.StartsWith(start))
