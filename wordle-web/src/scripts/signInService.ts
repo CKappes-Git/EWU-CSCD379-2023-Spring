@@ -1,5 +1,4 @@
 import Axios from 'axios'
-import { Word } from './word'
 
 class WordleToken {
   userId: string = ''

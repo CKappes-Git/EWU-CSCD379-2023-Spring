@@ -15,8 +15,6 @@
 
         <v-btn icon="mdi-brightness-7" @click="switchTheme"></v-btn>
 
-        <ActiveUser></ActiveUser>
-
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn icon="mdi-hamburger" v-bind="props"></v-btn>
@@ -25,27 +23,17 @@
           <v-list width="200">
             <v-list-item>
               <v-list-item-title>
-                <RouterLink :to="{ name: 'wordOfTheDay' }"> Play Word of the Day </RouterLink>
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>
-                <RouterLink :to="{ name: 'wordle' }"> Play Random Word </RouterLink>
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>
-                <RouterLink :to="{ name: 'leaderboard' }"> Leaderboard </RouterLink>
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>
-                <RouterLink :to="{ name: 'wordleEditor' }"> Editor </RouterLink>
+                <RouterLink :to="{ name: 'civ' }"> Home </RouterLink>
               </v-list-item-title>
             </v-list-item>
             <v-list-item>
               <v-list-item-title>
                 <RouterLink :to="{ name: 'about' }"> About </RouterLink>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <RouterLink :to="{ name: 'civEditor' }"> Editor </RouterLink>
               </v-list-item-title>
             </v-list-item>
             <v-list-item v-if="signInService.isSignedIn">
@@ -69,19 +57,14 @@ import { useTheme } from 'vuetify/lib/framework.mjs'
 import { inject, reactive } from 'vue'
 import { useDisplay } from 'vuetify'
 import { provide } from 'vue'
-import { PlayerService } from './scripts/playerService'
 import { Services } from './scripts/services'
-import ActiveUser from './components/ActiveUser.vue'
 import type { SignInService } from './scripts/signInService'
 import AppUser from './components/AppUser.vue'
 
 // Provide the useDisplay to other components so that it can be used in testing.
 const display = reactive(useDisplay())
 provide(Services.Display, display)
-const playerService = new PlayerService()
 const signInService = inject(Services.SignInService) as SignInService
-playerService.setupPlayerAsync()
-provide(Services.PlayerService, playerService)
 
 const theme = useTheme()
 

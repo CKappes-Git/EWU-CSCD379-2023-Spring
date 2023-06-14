@@ -21,7 +21,7 @@ public class CivService
         var civs = await _db.Civs
           .Where(c => c.CivName.StartsWith(start))
           .Take(count.Value)
-          .OrderByDescending(c => c.CivName)
+          .OrderBy(c => c.CivName)
           .ToListAsync();
         return civs;
     }
@@ -36,7 +36,7 @@ public class CivService
                 var leader = await _db.Leaders
                   .Where(l => l.Name.StartsWith(start) && l.CivID == civ.CivID)
                   .Take(count.Value)
-                  .OrderByDescending(l => l.Name)
+                  .OrderBy(l => l.Name)
                   .ToListAsync();
                 return leader;
             }
@@ -45,7 +45,7 @@ public class CivService
         var leaders = await _db.Leaders
             .Where(l => l.Name.StartsWith(start))
             .Take(count.Value)
-            .OrderByDescending(l => l.Name)
+            .OrderBy(l => l.Name)
             .ToListAsync();
         return leaders;
         
