@@ -5,8 +5,8 @@
       <template v-slot>
         <v-app-bar-title>
           <RouterLink to="/">
-            <v-icon icon="mdi-alpha-w-box" color="orange-darken-3"></v-icon>
-            Wordle
+            <v-icon icon="mdi-roman-numeral-6" color="red"></v-icon>
+            Civilization
           </RouterLink>
         </v-app-bar-title>
         <v-spacer></v-spacer>

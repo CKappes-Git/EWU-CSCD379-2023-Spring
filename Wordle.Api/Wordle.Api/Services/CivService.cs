@@ -338,4 +338,70 @@ public class CivService
           .ToListAsync();
         return leaders;
     }
+
+    public async Task<Leader> DeleteLeaderAsync(string leaderName)
+    {
+        if(leaderName is null)
+        {
+            throw new ArgumentNullException(nameof(leaderName));
+        }
+        var leader = _db.Leaders.Where(l => l.Name == leaderName).FirstOrDefault();
+        if (leader != null)
+        {
+            var leaderAttributes = await _db.LeaderAttributes
+                .Where(a => a.LeaderID == leader.LeaderID)
+                .ToListAsync();
+            if (leaderAttributes != null)
+            {
+                foreach (var a in leaderAttributes)
+                {
+                    _db.LeaderAttributes.Remove(a);
+                }
+            }
+
+            _db.Leaders.Remove(leader);
+
+            await _db.SaveChangesAsync();
+        }
+
+        return leader;
+        
+    }
+
+    public async Task<Civ> DeleteCivAsync(string civName)
+    {
+        if(civName is null)
+        {
+            throw new ArgumentNullException("Civ name was null");
+        }
+
+        var civ = await _db.Civs.Where(c => c.CivName == civName).FirstOrDefaultAsync();
+        if(civ != null)
+        {
+            var leaders = await _db.Leaders.Where(l => l.CivID == civ.CivID).ToListAsync();
+            if(leaders != null)
+            {
+                foreach(var l in leaders)
+                {
+                    await DeleteLeaderAsync(l.Name);
+                }
+            }
+
+            var civAttributes = await _db.CivAttributes
+                .Where(a => a.CivID == civ.CivID) 
+                .ToListAsync();
+            if(civAttributes != null)
+            {
+                foreach( var a in civAttributes)
+                {
+                    _db.CivAttributes.Remove(a);
+                }
+            }
+            _db.Civs.Remove(civ);
+
+            await _db.SaveChangesAsync();
+        }
+
+        return civ;
+    }
 }

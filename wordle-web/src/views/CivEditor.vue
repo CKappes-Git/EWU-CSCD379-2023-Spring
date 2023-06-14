@@ -2,9 +2,12 @@
     <v-container :class="[theme.global.name.value === 'dark' ? 'containerD' : 'containerL']">
         <div>
             <v-row>
-                <v-text-field style="width: 75%;" label="Civ" type="text" v-model="civName" @click="searchCiv" @input="searchCiv"></v-text-field>
+                <v-text-field style="width: 75%;" label="Civ" type="text" v-model="civName" @click="searchCiv(false)" @input="searchCiv(true)"></v-text-field>
                 <v-btn style="margin-top: 8px; background-color: green;" @click="addCiv">
                     +
+                </v-btn>
+                <v-btn style="margin-top: 8px; background-color: red;" @click="deleteCiv">
+                    -
                 </v-btn>
             </v-row>
             <div class="searchBox">
@@ -18,6 +21,9 @@
                 <v-text-field style="width: 75%;" label="Leader" type="text" v-model="leaderName" @click="search" @input="search"></v-text-field>
                 <v-btn style="margin-top: 8px; background-color: green;" @click="addLeader">
                     +
+                </v-btn>
+                <v-btn style="margin-top: 8px; background-color: red;" @click="deleteLeader">
+                    -
                 </v-btn>
             </v-row>
             <div class="searchBox">
@@ -92,34 +98,46 @@ const curLeader = ref<LeaderInfoDto>()
 const backgroundUrl = ref('')
 
 async function removeCivAttribute(attribute: CivAttribute, index: number){
-    if(attribute.civAttributeID != 0){
-        let apiPath = `civilization/DeleteCivAttribute?civAttributeID=${attribute.civAttributeID}`
-        Axios.post(apiPath).then((result) => {
-            console.log(result.data)
-        }).catch((error) =>{
-            console.log(error)
-        })
-    }
-    if(curLeader.value != undefined){
-        curLeader.value.civAttributes.splice(index, 1)
-        
+    const answer = window.confirm("Are you sure you want to delete this attribute?")
+    if(answer){
+        if(attribute.civAttributeID != 0){
+            let apiPath = `civilization/DeleteCivAttribute?civAttributeID=${attribute.civAttributeID}`
+            Axios.post(apiPath).then((result) => {
+                console.log(result.data)
+            }).catch((error) =>{
+                console.log(error)
+            })
+        }
+        if(curLeader.value != undefined){
+            curLeader.value.civAttributes.splice(index, 1)
+            
+        }
     }
 }
 
 async function removeLeaderAttribute(attribute: LeaderAttribute, index: number){
-    if(attribute.leaderAttributeID != 0){
-        let apiPath = `civilization/DeleteLeaderAttribute?leaderAttributeID=${attribute.leaderAttributeID}`
-        Axios.post(apiPath).then((result) => {
-            console.log(result.data)
-        })
-    }
-    if(curLeader.value != undefined){
-        curLeader.value.leaderAttributes.splice(index, 1)
-        
+    const answer = window.confirm("Are you sure you want to delete this attribute?")
+    if(answer){
+        if(attribute.leaderAttributeID != 0){
+            let apiPath = `civilization/DeleteLeaderAttribute?leaderAttributeID=${attribute.leaderAttributeID}`
+            Axios.post(apiPath).then((result) => {
+                console.log(result.data)
+            })
+        }
+        if(curLeader.value != undefined){
+            curLeader.value.leaderAttributes.splice(index, 1)
+            
+        }
     }
 }
 
-async function searchCiv(){
+async function searchCiv(typed = false){
+    if(typed){
+        curCiv.value = undefined
+        curLeader.value = undefined
+        leaderName.value = ''
+        backgroundUrl.value = ''
+    }
     let apiPath = `civilization/GetCivs?start=${civName.value}`
     Axios.get(apiPath).then((result) => {
         console.log(result.data)
@@ -188,6 +206,37 @@ async function addCiv(){
     Axios.post(apiPath).then((result) => {
         setCiv(result.data.civName)
     })
+}
+
+async function deleteCiv(){
+    const answer = window.confirm("You are about to delete a civ, all leaders of that civ, and all attributes of both.  Are you sure you want to do this?")
+    if(answer){
+        const doubleCheck = window.confirm("This cannot be undone (easily), are you sure?")
+        if(doubleCheck){
+            let apiPath = `civilization/DeleteCiv?civName=${civName.value}`
+            Axios.post(apiPath).then(() => {
+                civName.value = ''
+                curCiv.value = undefined
+                curLeader.value = undefined
+                backgroundUrl.value = ''
+            })
+        }
+    }
+}
+
+async function deleteLeader(){
+    const answer = window.confirm("You are about to delete a leader and all attributes.  Are you sure you want to do this?")
+    if(answer){
+        const doubleCheck = window.confirm("This cannot be undone (easily), are you sure?")
+        if(doubleCheck){
+            let apiPath = `civilization/DeleteLeader?leaderName=${leaderName.value}`
+            Axios.post(apiPath).then(() => {
+                leaderName.value = ''
+                curLeader.value = undefined
+                backgroundUrl.value = ''
+            })
+        }
+    }
 }
 
 function addCivAttribute(){

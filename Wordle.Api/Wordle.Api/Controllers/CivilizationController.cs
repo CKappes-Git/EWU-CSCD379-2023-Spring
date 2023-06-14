@@ -77,6 +77,18 @@ namespace Wordle.Api.Controllers
             return await _civService.DeleteLeaderAttributeAsync(leaderAttributeID);
         }
 
+        [HttpPost("DeleteLeader")]
+        public async Task<Leader> DeleteLeader(string leaderName)
+        {
+            return await _civService.DeleteLeaderAsync(leaderName);
+        }
+
+        [HttpPost("DeleteCiv")]
+        public async Task<Civ> DeleteCiv(string civName)
+        {
+            return await _civService.DeleteCivAsync(civName);
+        }
+
         [HttpGet("paginatedLeaders")]
         public async Task<IEnumerable<Leader>> GetPaginatedWords(int page = 1, int count = 10, string start = "")
         {
