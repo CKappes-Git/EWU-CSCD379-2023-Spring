@@ -57,6 +57,98 @@ namespace Wordle.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CivAttributes",
+                columns: table => new
+                {
+                    CivAttributeID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CivID = table.Column<int>(type: "int", nullable: false),
+                    AttributeType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AbilityName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CivAttributes", x => x.CivAttributeID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CivBackgrounds",
+                columns: table => new
+                {
+                    CivBackgroundId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CivID = table.Column<int>(type: "int", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CivBackgrounds", x => x.CivBackgroundId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Civs",
+                columns: table => new
+                {
+                    CivID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CivName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Civs", x => x.CivID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaderAttributes",
+                columns: table => new
+                {
+                    LeaderAttributeID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LeaderID = table.Column<int>(type: "int", nullable: false),
+                    AttributeType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AbilityName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaderAttributes", x => x.LeaderAttributeID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeaderNotes",
+                columns: table => new
+                {
+                    LeaderNoteID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LeaderID = table.Column<int>(type: "int", nullable: false),
+                    AppUserID = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NoteName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ScienceTree = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CultureTree = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Production = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaderNotes", x => x.LeaderNoteID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Leaders",
+                columns: table => new
+                {
+                    LeaderID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CivID = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Leaders", x => x.LeaderID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -219,6 +311,24 @@ namespace Wordle.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "CivAttributes");
+
+            migrationBuilder.DropTable(
+                name: "CivBackgrounds");
+
+            migrationBuilder.DropTable(
+                name: "Civs");
+
+            migrationBuilder.DropTable(
+                name: "LeaderAttributes");
+
+            migrationBuilder.DropTable(
+                name: "LeaderNotes");
+
+            migrationBuilder.DropTable(
+                name: "Leaders");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.CompilerServices;
 using Wordle.Api.Data;
 using Wordle.Api.Dtos;
 
@@ -271,24 +272,7 @@ public class CivService
         return background.Url;
     }
 
-    /*
-    public async Task<Word> DeleteWordAsync(string? targetWord)
-    {
-        if (string.IsNullOrEmpty(targetWord) || targetWord.Length != 5)
-        {
-            throw new ArgumentException("Word must be 5 characters long");
-        }
-
-        var word = await _db.Words.FirstOrDefaultAsync(w => w.Text == targetWord);
-        if (word != null)
-        {
-            _db.Words.Remove(word);
-        }
-        await _db.SaveChangesAsync();
-        return word;
-    }
-    */
-
+    
     public async Task<CivAttribute> DeleteCivAttributeAsync(int civAttributeID)
     {
         if(civAttributeID <= 0)
@@ -348,6 +332,21 @@ public class CivService
         var leader = _db.Leaders.Where(l => l.Name == leaderName).FirstOrDefault();
         if (leader != null)
         {
+            //delete all leader notes
+            var leaderNotes = await _db.LeaderNotes
+                .Where(n => n.LeaderID == leader.LeaderID)
+                .ToListAsync();
+
+            if (leaderNotes != null)
+            {
+                foreach (var n in leaderNotes)
+                {
+                    _db.LeaderNotes.Remove(n);
+                }
+            }
+
+
+            //delete all leader attributes
             var leaderAttributes = await _db.LeaderAttributes
                 .Where(a => a.LeaderID == leader.LeaderID)
                 .ToListAsync();
@@ -403,5 +402,66 @@ public class CivService
         }
 
         return civ;
+    }
+
+    public async Task<IEnumerable<LeaderNotes>> GetLeaderNotes(string leaderName, string appUserId)
+    {
+        if (leaderName == null) { throw new ArgumentNullException("Leader Id cannot be null"); }
+        if (appUserId == null) { throw new ArgumentNullException("AppUser Id cannot be null"); }
+
+        var leader = await _db.Leaders.Where(l => l.Name == leaderName).FirstOrDefaultAsync();
+        if(leader != null)
+        {
+            var notes = await _db.LeaderNotes.Where(n => n.LeaderID == leader.LeaderID && n.AppUserID == appUserId).ToListAsync();
+            return notes;
+        }
+        return null;
+    }
+
+    public async Task<LeaderNoteDto> SetLeaderNote(LeaderNoteDto newNote)
+    {
+        if (newNote == null) { throw new ArgumentNullException(); }
+        if(newNote.LeaderNoteID == 0)
+        {//adding a new note
+            LeaderNotes note = new() { 
+                LeaderID = newNote.LeaderID,
+                AppUserID = newNote.AppUserID,
+                NoteName = newNote.NoteName,
+                ScienceTree = newNote.ScienceTree,
+                CultureTree = newNote.CultureTree,
+                Production = newNote.Production,
+                Notes = newNote.Notes,
+            };
+            _db.Add(note);
+        }
+        else
+        {//updating previous note
+            var oldNote = await _db.LeaderNotes.Where(n => n.LeaderNoteID == newNote.LeaderNoteID).FirstOrDefaultAsync();
+            if (oldNote != null)
+            {
+                oldNote.NoteName = newNote.NoteName;
+                oldNote.ScienceTree = newNote.ScienceTree;
+                oldNote.CultureTree = newNote.CultureTree;
+                oldNote.Production = newNote.Production;
+                oldNote.Notes = newNote.Notes;
+            }
+            
+        }
+
+        await _db.SaveChangesAsync();
+        return newNote;
+    }
+
+    public async Task<LeaderNoteDto> DeleteLeaderNote(LeaderNoteDto targetNote)
+    {
+        if (targetNote == null || targetNote.LeaderNoteID == 0) { throw new ArgumentNullException("No valid note was given"); }
+
+        var target = await _db.LeaderNotes.Where(n => n.LeaderNoteID == targetNote.LeaderNoteID).FirstOrDefaultAsync();
+        if (target != null)
+        {
+            _db.LeaderNotes.Remove(target);
+        }
+        await _db.SaveChangesAsync();
+        return targetNote;
     }
 }

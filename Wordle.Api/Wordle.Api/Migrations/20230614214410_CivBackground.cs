@@ -5,7 +5,7 @@
 namespace Wordle.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class CivAttribute : Migration
+    public partial class CivBackground : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

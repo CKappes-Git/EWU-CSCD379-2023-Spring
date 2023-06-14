@@ -17,6 +17,7 @@ namespace Wordle.Api.Data
         public DbSet<LeaderAttribute> LeaderAttributes => Set<LeaderAttribute>();
         public DbSet<CivAttribute> CivAttributes => Set<CivAttribute>();
         public DbSet<CivBackground> CivBackgrounds => Set<CivBackground>();
+        public DbSet<LeaderNotes> LeaderNotes => Set<LeaderNotes>();
 
         /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

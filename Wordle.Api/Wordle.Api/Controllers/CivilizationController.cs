@@ -40,6 +40,7 @@ namespace Wordle.Api.Controllers
         }
 
         [HttpPost("AddCiv")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<Civ> AddCiv(string civName)
         {
             return await _civService.AddCivAsync(civName);
@@ -47,6 +48,7 @@ namespace Wordle.Api.Controllers
 
         
         [HttpPost("AddLeader")]
+        [Authorize(Roles = Roles.Admin)]
         //[Authorize(Policy = Policies.MasterOfTheUniverse)]
         public async Task<Leader> AddLeader(string civName, string leaderName)
         {
@@ -54,6 +56,7 @@ namespace Wordle.Api.Controllers
         }
 
         [HttpPost("AddAttributes")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<LeaderInfoDto> AddAttributes(LeaderInfoDto leaderInfo)
         {
             return await _civService.AddAttributesAsync(leaderInfo);
@@ -66,24 +69,28 @@ namespace Wordle.Api.Controllers
         }
 
         [HttpPost("DeleteCivAttribute")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<CivAttribute> DeleteCivAttribute(int civAttributeID)
         {
             return await _civService.DeleteCivAttributeAsync(civAttributeID);
         }
 
         [HttpPost("DeleteLeaderAttribute")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<LeaderAttribute> DeleteLeaderAttribute(int leaderAttributeID)
         {
             return await _civService.DeleteLeaderAttributeAsync(leaderAttributeID);
         }
 
         [HttpPost("DeleteLeader")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<Leader> DeleteLeader(string leaderName)
         {
             return await _civService.DeleteLeaderAsync(leaderName);
         }
 
         [HttpPost("DeleteCiv")]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<Civ> DeleteCiv(string civName)
         {
             return await _civService.DeleteCivAsync(civName);
@@ -95,14 +102,34 @@ namespace Wordle.Api.Controllers
             return (await _civService.GetPaginatedLeadersAsync(page, count, start));
         }
         [HttpPost("setBackgroundUrl")]
-        public async Task<String> setBackground(string civName, string url)
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<String> SetBackground(string civName, string url)
         {
             return await _civService.SetBackgroundUrl(civName, url);
         }
         [HttpGet("GetBackgroundUrl")]
-        public async Task<String> getBackground(string civName)
+        public async Task<String> GetBackground(string civName)
         {
             return await _civService.GetBackgroundUrl(civName);
+        }
+        [HttpGet("GetLeaderNotes")]
+        [Authorize]
+        public async Task<IEnumerable<LeaderNotes>> GetLeaderNotes(string leaderName, string appUserId)
+        {
+            return await _civService.GetLeaderNotes(leaderName, appUserId);
+        }
+        [HttpPost("SetLeaderNote")]
+        [Authorize]
+        public async Task<LeaderNoteDto> SetLeaderNote(LeaderNoteDto leaderNote)
+        {
+            return await _civService.SetLeaderNote(leaderNote);
+        }
+
+        [HttpPost("DeleteLeaderNote")]
+        [Authorize]
+        public async Task<LeaderNoteDto> DeleteLeaderNote(LeaderNoteDto leaderNote)
+        {
+            return await _civService.DeleteLeaderNote(leaderNote);
         }
     }
 }

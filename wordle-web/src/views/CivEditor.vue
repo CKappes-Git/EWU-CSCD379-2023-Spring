@@ -40,7 +40,7 @@
                         <v-btn style="color: red; margin-left: 90%; width: max-content;" @click="removeCivAttribute(attribute, index)">X</v-btn>
                         <v-text-field label="Type" type="text" v-model="attribute.attributeType"></v-text-field>
                         <v-text-field label="Name" type="text" v-model="attribute.abilityName"></v-text-field>
-                        <v-text-field label="Description" type="text" v-model="attribute.description"></v-text-field>
+                        <v-textarea label="Description" type="text" v-model="attribute.description"></v-textarea>
                     </v-card>
                 </div>
                 <v-btn @click="addCivAttribute">
@@ -54,7 +54,8 @@
                         <v-btn style="color: red; margin-left: 90%; width: max-content;" @click="removeLeaderAttribute(attribute, index)">X</v-btn>
                         <v-text-field label="Type" type="text" v-model="attribute.attributeType"></v-text-field>
                         <v-text-field label="Name" type="text" v-model="attribute.abilityName"></v-text-field>
-                        <v-text-field label="Description" type="text" v-model="attribute.description"></v-text-field>
+                        <v-textarea label="Description" type="text" v-model="attribute.description"></v-textarea>
+                        <v-btn @click="console.log(attribute.description)">log desc</v-btn>
                     </v-card>
                 </div>
                 <v-btn @click="addLeaderAttribute">

@@ -19,7 +19,7 @@
                                 {{ attribute.attributeType }}: {{ attribute.abilityName }}
                             </v-card-title>
                             <v-card-text>
-                                {{ attribute.description }}
+                                <span style="white-space: pre;">{{ attribute.description }}</span>
                             </v-card-text>
                         </v-card>
                     </div>
@@ -32,7 +32,7 @@
                                 {{ attribute.attributeType }}: {{ attribute.abilityName }}
                             </v-card-title>
                             <v-card-text>
-                                {{ attribute.description }}
+                                <span style="white-space: pre;">{{ attribute.description }}</span>
                             </v-card-text>
                         </v-card>
                     </div>
