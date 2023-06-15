@@ -55,7 +55,6 @@
                         <v-text-field label="Type" type="text" v-model="attribute.attributeType"></v-text-field>
                         <v-text-field label="Name" type="text" v-model="attribute.abilityName"></v-text-field>
                         <v-textarea label="Description" type="text" v-model="attribute.description"></v-textarea>
-                        <v-btn @click="console.log(attribute.description)">log desc</v-btn>
                     </v-card>
                 </div>
                 <v-btn @click="addLeaderAttribute">
@@ -66,7 +65,7 @@
         <v-btn  v-if="curLeader != null" @click="submit" style="margin: 8px; width: 100%;">
             Submit Changes
         </v-btn>
-        <div style="margin: 20px;" v-if="backgroundUrl != ''">
+        <div style="margin: 20px;" v-if="curLeader">
             <v-row>
                 <v-text-field style="width: 75%;" label="Background" type="text" v-model="backgroundUrl"></v-text-field>
                 <v-btn style="margin-left: 3%; margin-top: 8px;" @click="setBackground">Set</v-btn>
@@ -263,18 +262,5 @@ async function submit(){
 </script>
 
 <style scoped>
-    .containerD{
-        border-radius: 20px;
-        margin-top: 5px;
-        background-color:rgba(0, 0, 0, 0.8);
-    }
-    .containerL{
-        border-radius: 20px;
-        margin-top: 5px;
-        background-color:rgba(255, 255, 255, 0.8);
-    }
-    .searchBox{
-    overflow-y: scroll;
-    max-height: 150px;
-}
+@import '../components/style.css';
 </style>

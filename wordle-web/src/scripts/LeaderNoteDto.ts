@@ -1,10 +1,10 @@
-export class LeaderNote {
+export class LeaderNoteDto {
     leaderNoteID: number = 0
     leaderID: number = 0
     appUserID = ''
     noteName: string = ''
-    scienceTree: string[] = []
-    cultureTree: string[] = []
-    production: string[] = []
+    scienceTree: string = ''
+    cultureTree: string = ''
+    production: string = ''
     notes: string = ''
   }

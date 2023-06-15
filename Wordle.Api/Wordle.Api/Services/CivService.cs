@@ -418,7 +418,7 @@ public class CivService
         return null;
     }
 
-    public async Task<LeaderNoteDto> SetLeaderNote(LeaderNoteDto newNote)
+    public async Task<int> SetLeaderNote(LeaderNoteDto newNote)
     {
         if (newNote == null) { throw new ArgumentNullException(); }
         if(newNote.LeaderNoteID == 0)
@@ -433,6 +433,8 @@ public class CivService
                 Notes = newNote.Notes,
             };
             _db.Add(note);
+            await _db.SaveChangesAsync();
+            return note.LeaderNoteID;
         }
         else
         {//updating previous note
@@ -449,19 +451,18 @@ public class CivService
         }
 
         await _db.SaveChangesAsync();
-        return newNote;
+        return newNote.LeaderNoteID;
     }
 
-    public async Task<LeaderNoteDto> DeleteLeaderNote(LeaderNoteDto targetNote)
+    public async Task<Boolean> DeleteLeaderNote(int targetNoteId)
     {
-        if (targetNote == null || targetNote.LeaderNoteID == 0) { throw new ArgumentNullException("No valid note was given"); }
 
-        var target = await _db.LeaderNotes.Where(n => n.LeaderNoteID == targetNote.LeaderNoteID).FirstOrDefaultAsync();
+        var target = await _db.LeaderNotes.Where(n => n.LeaderNoteID == targetNoteId).FirstOrDefaultAsync();
         if (target != null)
         {
             _db.LeaderNotes.Remove(target);
         }
         await _db.SaveChangesAsync();
-        return targetNote;
+        return true;
     }
 }

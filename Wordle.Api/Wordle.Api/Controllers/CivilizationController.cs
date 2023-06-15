@@ -120,16 +120,16 @@ namespace Wordle.Api.Controllers
         }
         [HttpPost("SetLeaderNote")]
         [Authorize]
-        public async Task<LeaderNoteDto> SetLeaderNote(LeaderNoteDto leaderNote)
+        public async Task<int> SetLeaderNote(LeaderNoteDto leaderNote)
         {
             return await _civService.SetLeaderNote(leaderNote);
         }
 
         [HttpPost("DeleteLeaderNote")]
         [Authorize]
-        public async Task<LeaderNoteDto> DeleteLeaderNote(LeaderNoteDto leaderNote)
+        public async Task<Boolean> DeleteLeaderNote(int leaderNoteId)
         {
-            return await _civService.DeleteLeaderNote(leaderNote);
+            return await _civService.DeleteLeaderNote(leaderNoteId);
         }
     }
 }

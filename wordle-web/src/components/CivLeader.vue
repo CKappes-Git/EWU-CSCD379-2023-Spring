@@ -87,36 +87,5 @@ async function setLeader(name = ''){
 </script>
 
 <style scoped>
-.leaderContainer{
-    background-size: cover;
-    border-radius: 20px;
-}
-.opacityDropD{
-    background-color:rgba(0, 0, 0, 0.8);
-}
-.attributeD{
-    border-radius: 10px;
-    margin-bottom: 15px;
-    background-color:rgba(0, 0, 0, 0.8);
-}
-.textInputD{
-    background-color: black;
-    border-radius: 20px;
-}
-.opacityDropL{
-    background-color:rgba(255, 255, 255, 0.8);
-}
-.attributeL{
-    border-radius: 10px;
-    margin-bottom: 15px;
-    background-color:rgba(255, 255, 255, 0.8);
-}
-.textInputL{
-    background-color: white;
-    border-radius: 20px;
-}
-.searchBox{
-    overflow-y: scroll;
-    max-height: 25%;
-}
+@import './style.css';
 </style>
