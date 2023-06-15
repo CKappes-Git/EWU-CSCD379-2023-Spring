@@ -447,6 +447,21 @@ public class CivService
                 oldNote.Production = newNote.Production;
                 oldNote.Notes = newNote.Notes;
             }
+            else {
+                LeaderNotes note = new()
+                {
+                    LeaderID = newNote.LeaderID,
+                    AppUserID = newNote.AppUserID,
+                    NoteName = newNote.NoteName,
+                    ScienceTree = newNote.ScienceTree,
+                    CultureTree = newNote.CultureTree,
+                    Production = newNote.Production,
+                    Notes = newNote.Notes,
+                };
+                _db.Add(note);
+                await _db.SaveChangesAsync();
+                return note.LeaderNoteID;
+            }
             
         }
 
