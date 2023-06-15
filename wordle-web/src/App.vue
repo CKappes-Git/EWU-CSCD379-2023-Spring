@@ -28,11 +28,6 @@
             </v-list-item>
             <v-list-item>
               <v-list-item-title>
-                <RouterLink :to="{ name: 'about' }"> About </RouterLink>
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-title>
                 <RouterLink :to="{ name: 'civEditor' }"> Editor </RouterLink>
               </v-list-item-title>
             </v-list-item>

@@ -167,6 +167,7 @@ async function setNotes(name: string = ''){
 }
 
 async function setData(name: string = ''){
+    curNote.value = undefined
     setCurLeader(name)
     setNotes(name)
 }
