@@ -1,6 +1,6 @@
 <template>
     <v-container class="leaderContainer" :style="{'background-image': `url(${backgroundImageUrl})`}" style="height: 100%; margin-top: 8px;">
-        <v-text-field :class="[theme.global.name.value === 'dark' ? 'textInputD' : 'textInputL']" label="Leader" type="text" v-model="leaderName" @click="search" @input="search"></v-text-field>
+        <v-text-field :class="[theme.global.name.value === 'dark' ? 'textInputD' : 'textInputL']" clearable @click:clear="clearName" label="Leader" type="text" v-model="leaderName" @click="search" @input="search"></v-text-field>
         <div class="searchBox">
             <div v-for="(leader, index) in searchResults" :key="index">
                 <v-btn style="margin-bottom: 1px; margin-bottom: 1px; width: 100%;" @click="setLeader(leader.name)">{{ leader.name }}</v-btn>
@@ -10,7 +10,7 @@
             <v-card-title>
                 {{ curLeader.leaderName }} of {{ curLeader.civName }}
             </v-card-title>
-            <v-row>
+            <v-row >
                 <v-col style="width: 100%;" v-if="curLeader.civAttributes != null">
                     <v-card-title>{{ curLeader.civName }}:</v-card-title>
                     <div style="width: 100%;" v-for="(attribute, index) in curLeader.civAttributes">
@@ -19,7 +19,7 @@
                                 {{ attribute.attributeType }}: {{ attribute.abilityName }}
                             </v-card-title>
                             <v-card-text>
-                                <span style="white-space: pre;">{{ attribute.description }}</span>
+                                <span style="white-space: pre-wrap;">{{ attribute.description }}</span>
                             </v-card-text>
                         </v-card>
                     </div>
@@ -32,7 +32,7 @@
                                 {{ attribute.attributeType }}: {{ attribute.abilityName }}
                             </v-card-title>
                             <v-card-text>
-                                <span style="white-space: pre;">{{ attribute.description }}</span>
+                                <span style="white-space: pre-wrap;">{{ attribute.description }}</span>
                             </v-card-text>
                         </v-card>
                     </div>
@@ -55,7 +55,12 @@ const theme = useTheme()
 const leaderName = ref('')
 const searchResults = ref<Leader[]>([])
 const curLeader = ref<LeaderInfoDto>()
-const backgroundImageUrl = ref('')
+const backgroundImageUrl = ref(``)
+
+async function clearName(){
+    leaderName.value = ""
+    search()
+}
 
 async function search() {
   console.log(leaderName.value)

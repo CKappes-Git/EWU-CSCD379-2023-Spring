@@ -60,7 +60,7 @@
                             Notes:
                         </v-card-title>
                         <v-card-text>
-                            <span style="white-space: pre;">{{ curNote.notes }}</span>
+                            <span style="white-space: pre-wrap;">{{ curNote.notes }}</span>
                         </v-card-text>
                     </div>
                 </div>
@@ -143,9 +143,21 @@ async function setNotes(name: string = ''){
                 tempNote.leaderID = resultNodes.value[i].leaderID
                 tempNote.appUserID = resultNodes.value[i].appUserID
                 tempNote.noteName = resultNodes.value[i].noteName
-                tempNote.scienceTree = resultNodes.value[i].scienceTree.split(',')
-                tempNote.cultureTree = resultNodes.value[i].cultureTree.split(',')
-                tempNote.production = resultNodes.value[i].production.split(',')
+                if(resultNodes.value[i].scienceTree != ""){
+                    tempNote.scienceTree = resultNodes.value[i].scienceTree.split(',')
+                } else {
+                    tempNote.scienceTree = []
+                }
+                if(resultNodes.value[i].cultureTree != ""){
+                    tempNote.cultureTree = resultNodes.value[i].cultureTree.split(',')
+                } else {
+                    tempNote.cultureTree = []
+                }
+                if(resultNodes.value[i].production != ""){
+                    tempNote.production = resultNodes.value[i].production.split(',')
+                } else {
+                    tempNote.production = []
+                }
                 tempNote.notes = resultNodes.value[i].notes
 
                 notes.value.push(tempNote)

@@ -2,20 +2,21 @@
     background-size: cover;
     border-radius: 20px;
     max-height: 85vh;
+    overflow-y: auto;
 }
 .containerD{
     background-size: cover;
     border-radius: 20px;
     background-color:rgba(0, 0, 0, 0.8);
     max-height: 85vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .containerL{
     background-size: cover;
     border-radius: 20px;
     background-color:rgba(255, 255, 255, 0.8);
     max-height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .opacityDropD{
     background-color:rgba(0, 0, 0, 0.8);
@@ -42,7 +43,7 @@
     border-radius: 20px;
 }
 .searchBox{
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 25%;
 }
 .editButton{

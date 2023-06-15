@@ -17,7 +17,7 @@
 
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-hamburger" v-bind="props"></v-btn>
+            <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
 
           <v-list width="200">
