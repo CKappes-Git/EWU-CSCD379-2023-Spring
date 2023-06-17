@@ -1,52 +1,52 @@
-.leaderContainer{
-    background-size: cover;
-    border-radius: 20px;
-    max-height: 85vh;
-    overflow-y: auto;
+.leaderContainer {
+  background-size: cover;
+  border-radius: 20px;
+  max-height: 85vh;
+  overflow-y: auto;
 }
-.containerD{
-    background-size: cover;
-    border-radius: 20px;
-    background-color:rgba(0, 0, 0, 0.8);
-    max-height: 85vh;
-    overflow-y: auto;
+.containerD {
+  background-size: cover;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  max-height: 85vh;
+  overflow-y: auto;
 }
-.containerL{
-    background-size: cover;
-    border-radius: 20px;
-    background-color:rgba(255, 255, 255, 0.8);
-    max-height: 100%;
-    overflow-y: auto;
+.containerL {
+  background-size: cover;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  max-height: 100%;
+  overflow-y: auto;
 }
-.opacityDropD{
-    background-color:rgba(0, 0, 0, 0.8);
+.opacityDropD {
+  background-color: rgba(0, 0, 0, 0.8);
 }
-.attributeD{
-    border-radius: 10px;
-    margin-bottom: 15px;
-    background-color:rgba(0, 0, 0, 0.8);
+.attributeD {
+  border-radius: 10px;
+  margin-bottom: 15px;
+  background-color: rgba(0, 0, 0, 0.8);
 }
-.textInputD{
-    background-color: black;
-    border-radius: 20px;
+.textInputD {
+  background-color: black;
+  border-radius: 20px;
 }
-.opacityDropL{
-    background-color:rgba(255, 255, 255, 0.8);
+.opacityDropL {
+  background-color: rgba(255, 255, 255, 0.8);
 }
-.attributeL{
-    border-radius: 10px;
-    margin-bottom: 15px;
-    background-color:rgba(255, 255, 255, 0.8);
+.attributeL {
+  border-radius: 10px;
+  margin-bottom: 15px;
+  background-color: rgba(255, 255, 255, 0.8);
 }
-.textInputL{
-    background-color: white;
-    border-radius: 20px;
+.textInputL {
+  background-color: white;
+  border-radius: 20px;
 }
-.searchBox{
-    overflow-y: auto;
-    max-height: 25%;
+.searchBox {
+  overflow-y: auto;
+  max-height: 25%;
 }
-.editButton{
-    margin-left: 90%;
-    width: 10%;
+.editButton {
+  margin-left: 90%;
+  width: 10%;
 }

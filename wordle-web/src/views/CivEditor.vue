@@ -1,11 +1,9 @@
 <template>
-    <editor-page :game="'Civilization'"></editor-page>
+  <editor-page :game="'Civilization'"></editor-page>
 </template>
 
 <script lang="ts" setup>
-
-import EditorPage from '@/components/EditorPage.vue';
-
+import EditorPage from '@/components/EditorPage.vue'
 </script>
 
 <style scoped>

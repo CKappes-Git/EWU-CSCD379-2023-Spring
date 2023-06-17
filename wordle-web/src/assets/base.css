@@ -67,8 +67,7 @@ div.v-theme--light span.bg {
   background-size: cover;
 }
 div.v-theme--darkCiv span.bg {
-  background: url('https://cdn.2kgames.com/civilization.com/1920x1080.jpg')
-    no-repeat center center;
+  background: url('https://cdn.2kgames.com/civilization.com/1920x1080.jpg') no-repeat center center;
   position: fixed;
   background-size: cover;
 }

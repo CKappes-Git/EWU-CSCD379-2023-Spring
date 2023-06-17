@@ -1,26 +1,25 @@
 <template>
-    <v-btn :class="[clicked? 'buttonGreen' : 'buttonRed']" @click="changeColor">{{ name }}</v-btn>
+  <v-btn :class="[clicked ? 'buttonGreen' : 'buttonRed']" @click="changeColor">{{ name }}</v-btn>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 const clicked = ref(false)
 const props = defineProps<{
-    name: string
+  name: string
 }>()
 
-function changeColor(){
-    clicked.value = !clicked.value
+function changeColor() {
+  clicked.value = !clicked.value
 }
-
 </script>
 
 <style scoped>
-.buttonGreen{
-    background-color: green;
+.buttonGreen {
+  background-color: green;
 }
-.buttonRed{
-    background-color: red;
+.buttonRed {
+  background-color: red;
 }
 </style>

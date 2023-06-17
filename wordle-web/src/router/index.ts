@@ -37,7 +37,7 @@ const router = createRouter({
       component: CivEditorVue,
       beforeEnter: async (to, from, next) => {
         if (SignInService.instance.token.roles.includes('Admin')) next()
-        else next({name: 'home'})
+        else next({ name: 'home' })
       }
     },
     {
@@ -46,7 +46,7 @@ const router = createRouter({
       component: WarhammerEditorVue,
       beforeEnter: async (to, from, next) => {
         if (SignInService.instance.token.roles.includes('Admin')) next()
-        else next({name: 'home'})
+        else next({ name: 'home' })
       }
     }
   ]

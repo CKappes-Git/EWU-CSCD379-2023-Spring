@@ -1,11 +1,9 @@
 <template>
-    <editor-page :game="'Warhammer'"></editor-page>
+  <editor-page :game="'Warhammer'"></editor-page>
 </template>
 
 <script lang="ts" setup>
-
-import EditorPage from '@/components/EditorPage.vue';
-
+import EditorPage from '@/components/EditorPage.vue'
 </script>
 
 <style scoped>
