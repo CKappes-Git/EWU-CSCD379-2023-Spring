@@ -238,6 +238,7 @@ public class CivService
         var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName && c.Game == game);
         if (civ == null) { throw new ArgumentNullException("Civ does not exist"); }
         var background = await _db.CivBackgrounds.FirstOrDefaultAsync(b => b.CivID == civ.CivID);
+        //returns an error link
         if (background == null) { return "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_1280.png"; }
         else
         {
