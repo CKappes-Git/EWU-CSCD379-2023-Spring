@@ -4,9 +4,11 @@
     <v-app-bar :elevation="3">
       <template v-slot>
         <v-app-bar-title>
-          <RouterLink to="/">
-            <v-icon icon="mdi-roman-numeral-6" color="red"></v-icon>
-            Civilization
+          <RouterLink style="color: #42A5F5; max-width: 25%; margin: 0;" to="/">
+            <v-row style="width: 150px;" dense>
+              <v-col style="max-width: 40px;"><v-img :width="50" src="../public/Campus.ico"></v-img></v-col>
+              <v-col style="max-width: 50px;"><p>Campus</p></v-col>
+            </v-row>
           </RouterLink>
         </v-app-bar-title>
         <v-spacer></v-spacer>
@@ -23,7 +25,12 @@
           <v-list width="200">
             <v-list-item>
               <v-list-item-title>
-                <RouterLink :to="{ name: 'civ' }"> Home </RouterLink>
+                <RouterLink :to="{ name: 'home' }"> Home </RouterLink>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title>
+                <RouterLink :to="{ name: 'civilization' }"> Civilization </RouterLink>
               </v-list-item-title>
             </v-list-item>
             <v-list-item>

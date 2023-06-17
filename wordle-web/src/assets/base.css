@@ -56,12 +56,23 @@ span.bg {
 }
 
 div.v-theme--dark span.bg {
-  background: url('https://cdn.2kgames.com/civilization.com/1920x1080.jpg')
+  background: url('https://cdn.neowin.com/news/images/galleries/4701/1662982203_windows_11_black_-_lockscreen_noise.jpg')
     no-repeat center center;
   position: fixed;
   background-size: cover;
 }
 div.v-theme--light span.bg {
+  background: url('https://4kwallpapers.com/images/wallpapers/windows-11-blue-stock-white-background-light-official-2560x1440-5616.jpg')
+    no-repeat fixed center;
+  background-size: cover;
+}
+div.v-theme--darkCiv span.bg {
+  background: url('https://cdn.2kgames.com/civilization.com/1920x1080.jpg')
+    no-repeat center center;
+  position: fixed;
+  background-size: cover;
+}
+div.v-theme--lightCiv span.bg {
   background: url('https://cdn1.epicgames.com/cd14dcaa4f3443f19f7169a980559c62/offer/EGS_SidMeiersCivilizationVI_FiraxisGames_S1-2560x1440-2fcd1c150ac6d8cdc672ae042d2dd179.jpg')
     no-repeat fixed center;
   background-size: cover;

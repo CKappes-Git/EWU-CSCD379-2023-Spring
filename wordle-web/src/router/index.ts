@@ -4,6 +4,7 @@ import CivViewVue from '@/views/CivView.vue'
 import CivEditorVue from '@/views/CivEditor.vue'
 import Axios from 'axios'
 import { SignInService } from '@/scripts/signInService'
+import HomePageVue from '@/views/HomePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,9 +15,14 @@ const router = createRouter({
       component: AboutView
     },
     {
-      path: '/',
-      name: 'civ',
+      path: '/civilization',
+      name: 'civilization',
       component: CivViewVue
+    },
+    {
+      path: '/',
+      name: 'home',
+      component: HomePageVue
     },
     {
       path: '/civeditor',

@@ -14,27 +14,13 @@
                 <v-col style="width: 100%;" v-if="curLeader.civAttributes != null">
                     <v-card-title>{{ curLeader.civName }}:</v-card-title>
                     <div style="width: 100%;" v-for="(attribute, index) in curLeader.civAttributes">
-                        <v-card :class="[theme.global.name.value === 'dark' ? 'attributeD' : 'attributeL']">
-                            <v-card-title>
-                                {{ attribute.attributeType }}: {{ attribute.abilityName }}
-                            </v-card-title>
-                            <v-card-text>
-                                <span style="white-space: pre-wrap;">{{ attribute.description }}</span>
-                            </v-card-text>
-                        </v-card>
+                        <attribute-view :attribute="attribute"></attribute-view>
                     </div>
                 </v-col>
                 <v-col v-if="curLeader.leaderAttributes != null">
                     <v-card-title>{{ curLeader.leaderName }}:</v-card-title>
                     <div style="width: 100%;" v-for="(attribute, index) in curLeader.leaderAttributes">
-                        <v-card :class="[theme.global.name.value === 'dark' ? 'attributeD' : 'attributeL']">
-                            <v-card-title>
-                                {{ attribute.attributeType }}: {{ attribute.abilityName }}
-                            </v-card-title>
-                            <v-card-text>
-                                <span style="white-space: pre-wrap;">{{ attribute.description }}</span>
-                            </v-card-text>
-                        </v-card>
+                        <attribute-view :attribute="attribute"></attribute-view>
                     </div>
                 </v-col>
             </v-row>
@@ -47,6 +33,7 @@
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import type { Leader } from '@/scripts/leader'
 import type { LeaderInfoDto } from '@/scripts/leaderInfoDto'
+import AttributeView from './AttributeView.vue'
 import Axios from 'axios'
 import { inject, ref } from 'vue'
 

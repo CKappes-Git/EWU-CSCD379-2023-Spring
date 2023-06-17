@@ -1,18 +1,6 @@
 <template>
 
-<v-btn class="primarySwitch" v-if="primarySwitch" icon="mdi-format-list-bulleted" @click="togglePrimary">
-</v-btn>
-<v-btn class="primarySwitch" v-else icon="mdi-lectern" @click="togglePrimary">
-</v-btn>
-
-<v-btn class="knowMore" v-if="!knowMore" icon="mdi-card-plus-outline" @click="toggleMore">
-</v-btn>
-<v-btn class="knowMore" v-else icon="mdi-card-remove-outline" @click="toggleMore">
-</v-btn>
-<v-btn class="toggleNotes" v-if="knowMore && !showNotes" icon="mdi-format-list-bulleted" @click="toggleNotes">
-</v-btn>
-<v-btn class="toggleNotes" v-if="knowMore && showNotes" icon="mdi-lectern" @click="toggleNotes">
-</v-btn>
+    <SideButtons :knowMore="knowMore" :primarySwitch="primarySwitch" :showNotes="showNotes" @togglePrimary="togglePrimary" @toggleMore="toggleMore" @toggleNotes="toggleNotes"></SideButtons>
 
 <v-row style="width: 90%; margin-left: 5%; height: 100%;">
     <v-col>
@@ -31,6 +19,7 @@
 <script lang="ts" setup>
 import CivLeader from '@/components/CivLeader.vue';
 import NoteViewer from '@/components/NoteViewer.vue'
+import SideButtons from '@/components/SideButtons.vue';
 import { ref } from 'vue';
 
 const primarySwitch = ref(true)
@@ -51,27 +40,3 @@ function toggleNotes(){
 }
 
 </script>
-
-<style scoped>
-.primarySwitch{
-    position: absolute;
-    left: 0px;
-    height: 50px;
-    top: 50%;
-    padding: 0;
-}
-.knowMore {
-    position: absolute;
-    right: 0px;
-    height: 50px;
-    top: 50%;
-    padding: 0;
-}
-.toggleNotes {
-    position: absolute;
-    right: 0px;
-    height: 50px;
-    top: 60%;
-    padding: 0;
-}
-</style>
