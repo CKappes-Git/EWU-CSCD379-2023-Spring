@@ -12,8 +12,8 @@ using Wordle.Api.Data;
 namespace Wordle.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230614214435_LeaderNotes")]
-    partial class LeaderNotes
+    [Migration("20230617163105_Civ")]
+    partial class Civ
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -254,6 +254,10 @@ namespace Wordle.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Game")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CivID");
 
                     b.ToTable("Civs");
@@ -317,6 +321,10 @@ namespace Wordle.Api.Migrations
 
                     b.Property<int>("CivID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Game")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -35,9 +35,21 @@
             </v-list-item>
             <v-list-item>
               <v-list-item-title>
-                <RouterLink :to="{ name: 'civEditor' }"> Editor </RouterLink>
+                <RouterLink :to="{ name: 'warhammer' }"> Warhammer </RouterLink>
               </v-list-item-title>
             </v-list-item>
+            <div v-if="signInService.token.roles.includes('Admin')">
+              <v-list-item>
+                <v-list-item-title>
+                  <RouterLink :to="{ name: 'civEditor' }"> Civ Editor </RouterLink>
+                </v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title>
+                  <RouterLink :to="{ name: 'warhammerEditor' }"> War Editor </RouterLink>
+                </v-list-item-title>
+              </v-list-item>
+            </div>
             <v-list-item v-if="signInService.isSignedIn">
               <v-list-item-title>
                 <v-btn @click="signInService.signOut()">Sign Out</v-btn>

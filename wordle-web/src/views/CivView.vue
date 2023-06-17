@@ -4,12 +4,12 @@
 
 <v-row style="width: 90%; margin-left: 5%; height: 100%;">
     <v-col>
-        <CivLeader v-if="primarySwitch"></CivLeader>
-        <NoteViewer v-else></NoteViewer>
+        <CivLeader :game="'Civilization'" v-if="primarySwitch"></CivLeader>
+        <NoteViewer :game="'Civilization'" v-else></NoteViewer>
     </v-col>
     <v-col v-if="knowMore == true">
-        <CivLeader v-if="!showNotes"></CivLeader>
-        <NoteViewer v-if="showNotes"></NoteViewer>
+        <CivLeader :game="'Civilization'" v-if="!showNotes"></CivLeader>
+        <NoteViewer :game="'Civilization'" v-if="showNotes"></NoteViewer>
     </v-col>
 </v-row>
 

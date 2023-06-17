@@ -16,22 +16,22 @@ public class CivService
         _db = db;
     }
 
-    public async Task<IEnumerable<Civ>> GetCivsAsync(int? count, string start = "")
+    public async Task<IEnumerable<Civ>> GetCivsAsync(string game, int? count, string start = "")
     {
         count ??= 10;
         var civs = await _db.Civs
-          .Where(c => c.CivName.StartsWith(start))
+          .Where(c => c.CivName.StartsWith(start) && c.Game == game)
           .Take(count.Value)
           .OrderBy(c => c.CivName)
           .ToListAsync();
         return civs;
     }
-    public async Task<IEnumerable<Leader>> GetLeadersAsync(int? count, string? civName, string start = "")
+    public async Task<IEnumerable<Leader>> GetLeadersAsync(string game, int? count, string? civName, string start = "")
     {
         count ??= 10;
         if(civName != null)
         {
-            var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName.StartsWith(civName));
+            var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName.StartsWith(civName) && c.Game == game);
             if(civ != null)
             {
                 var leader = await _db.Leaders
@@ -44,7 +44,7 @@ public class CivService
         }
         
         var leaders = await _db.Leaders
-            .Where(l => l.Name.StartsWith(start))
+            .Where(l => l.Name.StartsWith(start) && l.Game == game)
             .Take(count.Value)
             .OrderBy(l => l.Name)
             .ToListAsync();
@@ -52,17 +52,17 @@ public class CivService
         
     }
 
-    public async Task<Civ> AddCivAsync(string newCivName)
+    public async Task<Civ> AddCivAsync(string game, string newCivName)
     {
-        if (newCivName is null)
+        if (newCivName is null || game is null)
         {
-            throw new ArgumentException("The civilization name is null");
+            throw new ArgumentException("Required Parameter was null");
         }
 
-        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == newCivName);
+        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == newCivName && c.Game == game);
         if (civ == null)
         {
-            civ = new() { CivName = newCivName };
+            civ = new() { CivName = newCivName, Game = game };
             _db.Civs.Add(civ);
         }
         
@@ -70,24 +70,25 @@ public class CivService
         return civ;
     }
 
-    public async Task<Leader> AddLeaderAsync(string civName, string leaderName)
+    public async Task<Leader> AddLeaderAsync(string game, string civName, string leaderName)
     {
-        if (leaderName is null || civName is null)
+        if (leaderName is null || civName is null || game is null)
         {
             throw new ArgumentException("The leader is missing something");
         }
 
-        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName);
+        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName && c.Game == game);
         if (civ == null) {
-            civ = await AddCivAsync(civName);
+            civ = await AddCivAsync(game, civName);
         }
-        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderName);
+        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderName && l.Game == game);
         if (leader == null)
         {
              leader = new()
             {
                 Name = leaderName,
-                CivID = civ.CivID
+                CivID = civ.CivID,
+                Game = game
             };
             _db.Leaders.Add(leader);
         }
@@ -95,22 +96,22 @@ public class CivService
         return leader;
     }
 
-    public async Task<LeaderInfoDto> AddAttributesAsync(LeaderInfoDto leaderInfo)
+    public async Task<LeaderInfoDto> AddAttributesAsync(string game, LeaderInfoDto leaderInfo)
     {
         if (leaderInfo is null)
         {
             throw new ArgumentException("The leader is missing");
         }
         
-        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == leaderInfo.CivName);
+        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == leaderInfo.CivName && c.Game == game);
         if (civ == null)
         {
-            civ = await AddCivAsync(leaderInfo.CivName);
+            civ = await AddCivAsync(game, leaderInfo.CivName);
         }
-        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderInfo.LeaderName);
+        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderInfo.LeaderName && l.Game == game);
         if (leader == null)
         {
-            leader = await AddLeaderAsync(leaderInfo.CivName, leaderInfo.LeaderName);
+            leader = await AddLeaderAsync(game, leaderInfo.CivName, leaderInfo.LeaderName);
         }
 
         if(leaderInfo.LeaderAttributes is not null) {
@@ -198,18 +199,18 @@ public class CivService
         }
 
         await _db.SaveChangesAsync();
-        return await GetLeaderInfoAsync(leader.Name);
+        return await GetLeaderInfoAsync(game, leader.Name);
 
     }
 
-    public async Task<LeaderInfoDto> GetLeaderInfoAsync(string leaderName)
+    public async Task<LeaderInfoDto> GetLeaderInfoAsync(string game, string leaderName)
     {
-        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderName);
+        var leader = await _db.Leaders.FirstOrDefaultAsync(l => l.Name == leaderName && l.Game == game);
         if (leader == null)
         {
             throw new ArgumentException("There is no leader by that name");
         }
-        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivID == leader.CivID);
+        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivID == leader.CivID && c.Game == game);
         if (civ == null)
         {
             throw new ArgumentException("That leader somehow has no civ, something has gone horribly wrong");
@@ -231,10 +232,10 @@ public class CivService
         return leaderInfo;
     }
 
-    public async Task<String> GetBackgroundUrl(string civName)
+    public async Task<String> GetBackgroundUrl(string game, string civName)
     {
         if(civName is null) { throw new ArgumentNullException("CivName is null"); }
-        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName);
+        var civ = await _db.Civs.FirstOrDefaultAsync(c => c.CivName == civName && c.Game == game);
         if (civ == null) { throw new ArgumentNullException("Civ does not exist"); }
         var background = await _db.CivBackgrounds.FirstOrDefaultAsync(b => b.CivID == civ.CivID);
         if (background == null) { return "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_1280.png"; }
@@ -244,17 +245,17 @@ public class CivService
         }
     }
 
-    public async Task<String> SetBackgroundUrl(string civName, string backgroundUrl)
+    public async Task<String> SetBackgroundUrl(string game, string civName, string backgroundUrl)
     {
         if(civName is null || backgroundUrl is null)
         {
             throw new ArgumentNullException("Param is empty");
         }
-        var civ = _db.Civs.FirstOrDefault(c => c.CivName == civName); 
+        var civ = _db.Civs.FirstOrDefault(c => c.CivName == civName && c.Game == game); 
         if (civ == null) {
             throw new ArgumentNullException("Civ does not exist, cannot give it a background");
         }
-        var background = _db.CivBackgrounds.FirstOrDefault(b => b.CivID==civ.CivID);
+        var background = _db.CivBackgrounds.FirstOrDefault(b => b.CivID == civ.CivID);
         if (background == null)
         {
             background = new()
@@ -305,7 +306,7 @@ public class CivService
 
     }
 
-    public async Task<IEnumerable<Leader>> GetPaginatedLeadersAsync(int page = 1, int count = 10, string start = "")
+    public async Task<IEnumerable<Leader>> GetPaginatedLeadersAsync(string game, int page = 1, int count = 10, string start = "")
     {
         if (page < 1) page = 1;
         if (count < 1 || count > 100) count = 10;
@@ -315,7 +316,7 @@ public class CivService
         var totalCount = await _db.Leaders.CountAsync();
         totalCount -= count;
         var leaders = await _db.Leaders
-          .Where(l => l.Name.StartsWith(start))
+          .Where(l => l.Name.StartsWith(start) && l.Game == game)
           .OrderBy(l => l.Name)
           .Skip(index)
           .Take(count)
@@ -323,13 +324,13 @@ public class CivService
         return leaders;
     }
 
-    public async Task<Leader> DeleteLeaderAsync(string leaderName)
+    public async Task<Leader> DeleteLeaderAsync(string game, string leaderName)
     {
         if(leaderName is null)
         {
             throw new ArgumentNullException(nameof(leaderName));
         }
-        var leader = _db.Leaders.Where(l => l.Name == leaderName).FirstOrDefault();
+        var leader = _db.Leaders.Where(l => l.Name == leaderName && l.Game == game).FirstOrDefault();
         if (leader != null)
         {
             //delete all leader notes
@@ -367,22 +368,22 @@ public class CivService
         
     }
 
-    public async Task<Civ> DeleteCivAsync(string civName)
+    public async Task<Civ> DeleteCivAsync(string game, string civName)
     {
         if(civName is null)
         {
             throw new ArgumentNullException("Civ name was null");
         }
 
-        var civ = await _db.Civs.Where(c => c.CivName == civName).FirstOrDefaultAsync();
+        var civ = await _db.Civs.Where(c => c.CivName == civName && c.Game == game).FirstOrDefaultAsync();
         if(civ != null)
         {
-            var leaders = await _db.Leaders.Where(l => l.CivID == civ.CivID).ToListAsync();
+            var leaders = await _db.Leaders.Where(l => l.CivID == civ.CivID && l.Game == game).ToListAsync();
             if(leaders != null)
             {
                 foreach(var l in leaders)
                 {
-                    await DeleteLeaderAsync(l.Name);
+                    await DeleteLeaderAsync(game, l.Name);
                 }
             }
 
@@ -404,12 +405,12 @@ public class CivService
         return civ;
     }
 
-    public async Task<IEnumerable<LeaderNotes>> GetLeaderNotes(string leaderName, string appUserId)
+    public async Task<IEnumerable<LeaderNotes>> GetLeaderNotes(string game, string leaderName, string appUserId)
     {
         if (leaderName == null) { throw new ArgumentNullException("Leader Id cannot be null"); }
         if (appUserId == null) { throw new ArgumentNullException("AppUser Id cannot be null"); }
 
-        var leader = await _db.Leaders.Where(l => l.Name == leaderName).FirstOrDefaultAsync();
+        var leader = await _db.Leaders.Where(l => l.Name == leaderName && l.Game == game).FirstOrDefaultAsync();
         if(leader != null)
         {
             var notes = await _db.LeaderNotes.Where(n => n.LeaderID == leader.LeaderID && n.AppUserID == appUserId).ToListAsync();

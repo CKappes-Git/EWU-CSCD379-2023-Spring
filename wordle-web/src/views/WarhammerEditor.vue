@@ -1,5 +1,5 @@
 <template>
-    <editor-page :game="'Civilization'"></editor-page>
+    <editor-page :game="'Warhammer'"></editor-page>
 </template>
 
 <script lang="ts" setup>

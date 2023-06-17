@@ -1,11 +1,11 @@
 <template>
     <div style="width: 100%; margin-top: 10px;">
-        <v-card-title>
+        <v-card-title v-if="tree.length != 0 || editMode">
             {{ treeType }}
         </v-card-title>
         <v-row style="margin-top: 5px;">
             <div style="margin-left: 5%;" v-if="!editMode">
-                <v-row>
+                <v-row v-if="tree.length != 0">
                     <v-col v-for="(node, index) in tree">
                         <NodeButton :name="node"/>
                     </v-col>

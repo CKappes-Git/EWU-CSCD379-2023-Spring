@@ -5,10 +5,10 @@
                 <div v-if="editMode">Close</div>
                 <div v-else>Edit</div>
             </v-btn>
-            <v-text-field :class="[theme.global.name.value === 'dark' ? 'textInputD' : 'textInputL']" label="Leader" type="text" v-model="leaderName" @click="search" @input="search"></v-text-field>
+            <v-text-field :class="[theme.global.name.value === 'dark' ? 'textInputD' : 'textInputL']" label="Leader" type="text" v-model="leaderName" @click="search(game)" @input="search(game)"></v-text-field>
             <div class="searchBox">
                 <div v-for="(leader, index) in searchResults" :key="index">
-                    <v-btn style="margin-bottom: 1px; margin-bottom: 1px; width: 100%;" @click="setData(leader.name)">{{ leader.name }}</v-btn>
+                    <v-btn style="margin-bottom: 1px; margin-bottom: 1px; width: 100%;" @click="setData(game, leader.name)">{{ leader.name }}</v-btn>
                 </div>
             </div>
             <div style="margin-top: 5px;" v-if="curLeader">
@@ -43,10 +43,16 @@
                         <v-text-field v-model="curNote.noteName"></v-text-field>
                         <v-btn style="width: 5%; background-color: red" @click="deleteNote()">-</v-btn>
                     </v-row>
-
-                    <NoteNodes v-if="curNote" :treeType="'Science:'" :editMode="editMode" :tree="curNote.scienceTree"></NoteNodes>
-                    <NoteNodes v-if="curNote" :treeType="'Culture:'" :editMode="editMode" :tree="curNote.cultureTree"></NoteNodes>
-                    <NoteNodes v-if="curNote" :treeType="'Production:'" :editMode="editMode" :tree="curNote.production"></NoteNodes>
+                    <div v-if="game == 'Civilization'">
+                        <NoteNodes v-if="curNote" :treeType="'Science:'" :editMode="editMode" :tree="curNote.scienceTree"></NoteNodes>
+                        <NoteNodes v-if="curNote" :treeType="'Culture:'" :editMode="editMode" :tree="curNote.cultureTree"></NoteNodes>
+                        <NoteNodes v-if="curNote" :treeType="'Production:'" :editMode="editMode" :tree="curNote.production"></NoteNodes>
+                    </div>
+                    <div v-else-if="game == 'Warhammer'">
+                        <NoteNodes v-if="curNote" :treeType="'Buildings:'" :editMode="editMode" :tree="curNote.scienceTree"></NoteNodes>
+                        <NoteNodes v-if="curNote" :treeType="'Leader:'" :editMode="editMode" :tree="curNote.cultureTree"></NoteNodes>
+                        <NoteNodes v-if="curNote" :treeType="'Faction:'" :editMode="editMode" :tree="curNote.production"></NoteNodes>
+                    </div>
                     
                     <div style="margin-top: 25px;" v-if="editMode">
                         <v-card-title>
@@ -102,9 +108,13 @@ const tempNoteDto = ref<LeaderNoteDto>()
 const curNote = ref<LeaderNote>()
 const editMode = ref(false)
 
-async function search() {
+const props = defineProps<{
+    game: string
+}>()
+
+async function search(game = "") {
   console.log(leaderName.value)
-  let apiPath = `civilization/GetLeaders?start=${leaderName.value}`
+  let apiPath = `civilization/GetLeaders?game=${game}&start=${leaderName.value}`
   Axios.get(apiPath).then((result) => {
     console.log(result.data)
     searchResults.value = result.data
@@ -119,9 +129,9 @@ function setNote(index: number = 0){
     curNote.value = notes.value[index]
 }
 
-async function setCurLeader(name: string = ''){
+async function setCurLeader(game = "", name: string = ''){
     if(name != ''){
-        let apiPath = `civilization/GetLeaders?start=${name}`
+        let apiPath = `civilization/GetLeaders?game=${game}&start=${name}`
         Axios.get(apiPath).then((result) => {
             console.log(result.data)
             curLeader.value = result.data[0]
@@ -129,10 +139,10 @@ async function setCurLeader(name: string = ''){
     }
 }
 
-async function setNotes(name: string = ''){
+async function setNotes(game = "", name: string = ''){
     if(name != ''){
         notes.value = []
-        let apiPath = `civilization/GetLeaderNotes?leaderName=${name}&appUserId=${SignInService.instance.token.userId}`
+        let apiPath = `civilization/GetLeaderNotes?game=${game}&leaderName=${name}&appUserId=${SignInService.instance.token.userId}`
         Axios.get(apiPath).then((result) => {
             console.log(result.data)
             searchResults.value = []
@@ -166,10 +176,10 @@ async function setNotes(name: string = ''){
     }
 }
 
-async function setData(name: string = ''){
+async function setData(game = "", name: string = ''){
     curNote.value = undefined
-    setCurLeader(name)
-    setNotes(name)
+    setCurLeader(game, name)
+    setNotes(game, name)
 }
 
 function newNote(){

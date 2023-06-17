@@ -92,7 +92,8 @@ namespace Wordle.Api.Migrations
                 {
                     CivID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CivName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CivName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Game = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,7 +142,8 @@ namespace Wordle.Api.Migrations
                     LeaderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CivID = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Game = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

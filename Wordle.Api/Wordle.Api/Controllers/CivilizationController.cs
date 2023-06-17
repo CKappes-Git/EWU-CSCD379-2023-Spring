@@ -28,44 +28,44 @@ namespace Wordle.Api.Controllers
         }
 
         [HttpGet("GetCivs")]
-        public async Task<IEnumerable<Civ>> GetCivs(int? count, string start = "")
+        public async Task<IEnumerable<Civ>> GetCivs(string game, int? count, string start = "")
         {
-            return await _civService.GetCivsAsync(count, start);
+            return await _civService.GetCivsAsync(game, count, start);
         }
 
         [HttpGet("GetLeaders")]
-        public async Task<IEnumerable<Leader>> GetLeaders(int? count, string? civName, string start = "")
+        public async Task<IEnumerable<Leader>> GetLeaders(string game, int? count, string? civName, string start = "")
         {
-            return await _civService.GetLeadersAsync(count, civName, start);
+            return await _civService.GetLeadersAsync(game, count, civName, start);
         }
 
         [HttpPost("AddCiv")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<Civ> AddCiv(string civName)
+        public async Task<Civ> AddCiv(string game, string civName)
         {
-            return await _civService.AddCivAsync(civName);
+            return await _civService.AddCivAsync(game, civName);
         }
 
         
         [HttpPost("AddLeader")]
         [Authorize(Roles = Roles.Admin)]
         //[Authorize(Policy = Policies.MasterOfTheUniverse)]
-        public async Task<Leader> AddLeader(string civName, string leaderName)
+        public async Task<Leader> AddLeader(string game, string civName, string leaderName)
         {
-            return await _civService.AddLeaderAsync(civName, leaderName);
+            return await _civService.AddLeaderAsync(game, civName, leaderName);
         }
 
         [HttpPost("AddAttributes")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<LeaderInfoDto> AddAttributes(LeaderInfoDto leaderInfo)
+        public async Task<LeaderInfoDto> AddAttributes(string game, LeaderInfoDto leaderInfo)
         {
-            return await _civService.AddAttributesAsync(leaderInfo);
+            return await _civService.AddAttributesAsync(game, leaderInfo);
         }
 
         [HttpGet("AllLeaderData")]
-        public async Task<LeaderInfoDto> GetAllLeaderData(string leaderName)
+        public async Task<LeaderInfoDto> GetAllLeaderData(string game, string leaderName)
         {
-            return await _civService.GetLeaderInfoAsync(leaderName);
+            return await _civService.GetLeaderInfoAsync(game, leaderName);
         }
 
         [HttpPost("DeleteCivAttribute")]
@@ -84,39 +84,39 @@ namespace Wordle.Api.Controllers
 
         [HttpPost("DeleteLeader")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<Leader> DeleteLeader(string leaderName)
+        public async Task<Leader> DeleteLeader(string game, string leaderName)
         {
-            return await _civService.DeleteLeaderAsync(leaderName);
+            return await _civService.DeleteLeaderAsync(game, leaderName);
         }
 
         [HttpPost("DeleteCiv")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<Civ> DeleteCiv(string civName)
+        public async Task<Civ> DeleteCiv(string game, string civName)
         {
-            return await _civService.DeleteCivAsync(civName);
+            return await _civService.DeleteCivAsync(game, civName);
         }
 
         [HttpGet("paginatedLeaders")]
-        public async Task<IEnumerable<Leader>> GetPaginatedWords(int page = 1, int count = 10, string start = "")
+        public async Task<IEnumerable<Leader>> GetPaginatedWords(string game, int page = 1, int count = 10, string start = "")
         {
-            return (await _civService.GetPaginatedLeadersAsync(page, count, start));
+            return (await _civService.GetPaginatedLeadersAsync(game, page, count, start));
         }
         [HttpPost("setBackgroundUrl")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<String> SetBackground(string civName, string url)
+        public async Task<String> SetBackground(string game, string civName, string url)
         {
-            return await _civService.SetBackgroundUrl(civName, url);
+            return await _civService.SetBackgroundUrl(game, civName, url);
         }
         [HttpGet("GetBackgroundUrl")]
-        public async Task<String> GetBackground(string civName)
+        public async Task<String> GetBackground(string game, string civName)
         {
-            return await _civService.GetBackgroundUrl(civName);
+            return await _civService.GetBackgroundUrl(game, civName);
         }
         [HttpGet("GetLeaderNotes")]
         [Authorize]
-        public async Task<IEnumerable<LeaderNotes>> GetLeaderNotes(string leaderName, string appUserId)
+        public async Task<IEnumerable<LeaderNotes>> GetLeaderNotes(string game, string leaderName, string appUserId)
         {
-            return await _civService.GetLeaderNotes(leaderName, appUserId);
+            return await _civService.GetLeaderNotes(game, leaderName, appUserId);
         }
         [HttpPost("SetLeaderNote")]
         [Authorize]

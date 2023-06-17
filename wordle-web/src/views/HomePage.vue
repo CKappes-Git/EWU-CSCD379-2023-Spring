@@ -9,9 +9,9 @@
                 </RouterLink>
             </v-col>
             <v-col>
-                <RouterLink :to="{ name: 'home' }" style="margin: 0; padding: 0;">
+                <RouterLink :to="{ name: 'warhammer' }" style="margin: 0; padding: 0;">
                     <v-card class="homeButton" :style="{'background-image': `url(https://i.ytimg.com/vi/WNUnz8FUsLc/maxresdefault.jpg)`}">
-                        <p class="cardTitle">Coming Soon</p>
+                        <p class="cardTitle">Total War: <br/><br/><br/>Warhammer 3</p>
                     </v-card>
                 </RouterLink>
             </v-col>
