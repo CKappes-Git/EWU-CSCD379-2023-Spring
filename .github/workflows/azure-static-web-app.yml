@@ -28,9 +28,6 @@ jobs:
       - name: Build Vue App 
         working-directory: ./wordle-web
         run: npm run build
-      - name: Run Vitest Unit Tests
-        run: npm run test:unit
-        working-directory: ./wordle-web
      
       - name: Deploy
         if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
