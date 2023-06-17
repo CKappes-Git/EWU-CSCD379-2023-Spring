@@ -27,7 +27,6 @@ import SideButtons from '@/components/SideButtons.vue'
 import { ref } from 'vue'
 
 const primarySwitch = ref(true)
-const curIconLeft = ref('mdi-format-list-bulleted')
 const knowMore = ref(false)
 const showNotes = ref(false)
 
