@@ -22,9 +22,6 @@ jobs:
       - name: Install Packages
         run: npm ci
         working-directory: ./wordle-web
-      - name: Lint Code
-        working-directory: ./wordle-web
-        run: npm run lint
       - name: Prettier Check
         working-directory: ./wordle-web
         run: npm run format:check

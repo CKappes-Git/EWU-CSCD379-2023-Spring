@@ -58,19 +58,19 @@
               v-if="curNote"
               :treeType="'Science:'"
               :editMode="editMode"
-              :tree="curNote.scienceTree"
+              v-model:tree="curNote.scienceTree"
             ></NoteNodes>
             <NoteNodes
               v-if="curNote"
               :treeType="'Culture:'"
               :editMode="editMode"
-              :tree="curNote.cultureTree"
+              v-model:tree="curNote.cultureTree"
             ></NoteNodes>
             <NoteNodes
               v-if="curNote"
               :treeType="'Production:'"
               :editMode="editMode"
-              :tree="curNote.production"
+              v-model:tree="curNote.production"
             ></NoteNodes>
           </div>
           <div v-else-if="game == 'Warhammer'">
@@ -78,19 +78,19 @@
               v-if="curNote"
               :treeType="'Buildings:'"
               :editMode="editMode"
-              :tree="curNote.scienceTree"
+              v-model:tree="curNote.scienceTree"
             ></NoteNodes>
             <NoteNodes
               v-if="curNote"
               :treeType="'Leader:'"
               :editMode="editMode"
-              :tree="curNote.cultureTree"
+              v-model:tree="curNote.cultureTree"
             ></NoteNodes>
             <NoteNodes
               v-if="curNote"
               :treeType="'Faction:'"
               :editMode="editMode"
-              :tree="curNote.production"
+              v-model:tree="curNote.production"
             ></NoteNodes>
           </div>
 
@@ -133,7 +133,6 @@ const curLeader = ref<Leader>()
 const searchResults = ref<Leader[]>([])
 const notes = ref<LeaderNote[]>([])
 const resultNodes = ref<LeaderNoteDto[]>([])
-const tempNoteDto = ref<LeaderNoteDto>()
 const curNote = ref<LeaderNote>()
 const editMode = ref(false)
 
@@ -222,7 +221,7 @@ function newNote() {
 }
 
 async function submitNote() {
-  if (curNote != undefined && curNote.value?.leaderID) {
+  if (curNote.value != undefined && curNote.value?.leaderID) {
     var sendNote = new LeaderNoteDto()
     sendNote.leaderNoteID = curNote.value.leaderNoteID
     sendNote.leaderID = curNote.value.leaderID

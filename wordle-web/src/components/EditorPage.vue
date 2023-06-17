@@ -51,7 +51,7 @@
     <v-row v-if="curLeader != null">
       <v-col style="width: 100%" v-if="curLeader.civAttributes != null">
         <v-card-title>{{ curLeader.civName }}:</v-card-title>
-        <div style="width: 100%" v-for="(attribute, index) in curLeader.civAttributes">
+        <div style="width: 100%" v-for="(attribute, index) in curLeader.civAttributes" :key="index">
           <v-card style="margin-bottom: 15px">
             <v-btn
               style="color: red; margin-left: 90%; width: max-content"
@@ -71,7 +71,7 @@
       </v-col>
       <v-col v-if="curLeader.leaderAttributes != null">
         <v-card-title>{{ curLeader.leaderName }}:</v-card-title>
-        <div style="width: 100%" v-for="(attribute, index) in curLeader.leaderAttributes">
+        <div style="width: 100%" v-for="(attribute, index) in curLeader.leaderAttributes" :key="index">
           <v-card style="margin-bottom: 15px">
             <v-btn
               style="color: red; margin-left: 90%; width: max-content"
