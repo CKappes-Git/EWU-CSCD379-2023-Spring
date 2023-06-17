@@ -9,7 +9,7 @@
         overflow-x: auto;
       "
     >
-      <v-col>
+      <v-col style="max-width: 500px; margin-right: 10%;">
         <RouterLink :to="{ name: 'civilization' }" style="margin: 0; padding: 0">
           <v-card
             class="homeButton"
@@ -21,7 +21,7 @@
           </v-card>
         </RouterLink>
       </v-col>
-      <v-col>
+      <v-col style="max-width: 500px;">
         <RouterLink :to="{ name: 'warhammer' }" style="margin: 0; padding: 0">
           <v-card
             class="homeButton"
