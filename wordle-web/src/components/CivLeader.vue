@@ -37,7 +37,11 @@
             v-for="(attribute, index) in curLeader.civAttributes"
             :key="index"
           >
-            <attribute-view :attribute="attribute"></attribute-view>
+            <attribute-view
+              :attribute-type="attribute.attributeType"
+              :ability-name="attribute.abilityName"
+              :description="attribute.description"
+            ></attribute-view>
           </div>
         </v-col>
         <v-col v-if="curLeader.leaderAttributes != null">
@@ -47,7 +51,11 @@
             v-for="(attribute, index) in curLeader.leaderAttributes"
             :key="index"
           >
-            <attribute-view :attribute="attribute"></attribute-view>
+            <attribute-view
+              :attribute-type="attribute.attributeType"
+              :ability-name="attribute.abilityName"
+              :description="attribute.description"
+            ></attribute-view>
           </div>
         </v-col>
       </v-row>
