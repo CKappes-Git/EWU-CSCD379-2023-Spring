@@ -421,6 +421,7 @@ public class CivService
 
     public async Task<int> SetLeaderNote(LeaderNoteDto newNote)
     {
+        //notes target the leader directly and don't need a game reference
         if (newNote == null) { throw new ArgumentNullException(); }
         if(newNote.LeaderNoteID == 0)
         {//adding a new note
