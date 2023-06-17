@@ -126,6 +126,7 @@ namespace Wordle.Api.Controllers
 
         [HttpPost("DeleteLeaderNote")]
         [Authorize]
+        //find way to use authorize to pass in user ID (could also be done in app, but I would prefer to do it with the header if possible)
         public async Task<Boolean> DeleteLeaderNote(int leaderNoteId)
         {
             return await _civService.DeleteLeaderNote(leaderNoteId);
