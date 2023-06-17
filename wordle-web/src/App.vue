@@ -6,7 +6,7 @@
         <v-app-bar-title>
           <RouterLink style="color: #42A5F5; max-width: 25%; margin: 0;" to="/">
             <v-row style="width: 150px;" dense>
-              <v-col style="max-width: 40px;"><v-img :width="50" src="../public/Campus.ico"></v-img></v-col>
+              <v-col style="max-width: 40px;"><v-img :width="50" src="/Campus.ico"></v-img></v-col>
               <v-col style="max-width: 50px;"><p>Campus</p></v-col>
             </v-row>
           </RouterLink>
