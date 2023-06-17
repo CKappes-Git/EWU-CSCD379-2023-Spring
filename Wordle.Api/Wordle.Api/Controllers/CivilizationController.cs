@@ -49,7 +49,6 @@ namespace Wordle.Api.Controllers
         
         [HttpPost("AddLeader")]
         [Authorize(Roles = Roles.Admin)]
-        //[Authorize(Policy = Policies.MasterOfTheUniverse)]
         public async Task<Leader> AddLeader(string game, string civName, string leaderName)
         {
             return await _civService.AddLeaderAsync(game, civName, leaderName);
