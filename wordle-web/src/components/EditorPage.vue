@@ -71,7 +71,11 @@
       </v-col>
       <v-col v-if="curLeader.leaderAttributes != null">
         <v-card-title>{{ curLeader.leaderName }}:</v-card-title>
-        <div style="width: 100%" v-for="(attribute, index) in curLeader.leaderAttributes" :key="index">
+        <div
+          style="width: 100%"
+          v-for="(attribute, index) in curLeader.leaderAttributes"
+          :key="index"
+        >
           <v-card style="margin-bottom: 15px">
             <v-btn
               style="color: red; margin-left: 90%; width: max-content"

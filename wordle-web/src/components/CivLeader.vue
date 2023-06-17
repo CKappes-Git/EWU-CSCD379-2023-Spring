@@ -32,13 +32,21 @@
       <v-row>
         <v-col style="width: 100%" v-if="curLeader.civAttributes != null">
           <v-card-title>{{ curLeader.civName }}:</v-card-title>
-          <div style="width: 100%" v-for="(attribute, index) in curLeader.civAttributes" :key="index">
+          <div
+            style="width: 100%"
+            v-for="(attribute, index) in curLeader.civAttributes"
+            :key="index"
+          >
             <attribute-view :attribute="attribute"></attribute-view>
           </div>
         </v-col>
         <v-col v-if="curLeader.leaderAttributes != null">
           <v-card-title>{{ curLeader.leaderName }}:</v-card-title>
-          <div style="width: 100%" v-for="(attribute, index) in curLeader.leaderAttributes" :key="index">
+          <div
+            style="width: 100%"
+            v-for="(attribute, index) in curLeader.leaderAttributes"
+            :key="index"
+          >
             <attribute-view :attribute="attribute"></attribute-view>
           </div>
         </v-col>
