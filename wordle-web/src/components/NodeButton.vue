@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+//name
 const clicked = ref(false)
 const props = defineProps<{
   name: string
